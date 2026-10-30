@@ -4,116 +4,330 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Runtime bootstrap tables, embedded for the single-file entry point. */
+/* BEGIN_GENERATED_BOOT_RUNTIME_TABLES */
+/* Runtime bootstrap tables embedded for the single-file entry point. */
 #define BLACK_GUEST_IMAGE_BASE 0x00010000u
 #define BLACK_GUEST_IMAGE_SIZE 0x00577A40u
-#define BLACK_LINK_PREFERRED_BASE 0x00400000u
+#define BLACK_LINK_PREFERRED_BASE 0x60000000u
 typedef struct { uint32_t instruction_rva; uint8_t displacement_offset; uint32_t guest_target; } BlackGuestOperandPatch;
+typedef struct { uint32_t slot_guest_va; uint32_t target_guest_va; uint8_t target_is_function; } BlackGuestPointerPatch;
+typedef struct { uint32_t instruction_rva; uint32_t target_guest_va; } BlackGuestBranchPatch;
+typedef struct { uint32_t operand_rva; uint32_t target_guest_va; } BlackGuestImmediatePatch;
 typedef struct { uint32_t guest_slot; const char *name; } BlackXboxImportSlot;
 typedef struct { uint32_t return_rva; const char *name; } BlackXboxImportCallsite;
 static const BlackGuestOperandPatch black_guest_operand_patches[] = {
-    { 0x00014763u, 1u, 0x00283034u },
-    { 0x00014774u, 2u, 0x00283030u },
-    { 0x0001477Au, 2u, 0x00283034u },
-    { 0x00014782u, 1u, 0x00283034u },
-    { 0x0001479Bu, 2u, 0x0028302Cu },
-    { 0x000147ADu, 1u, 0x00283034u },
-    { 0x000147C4u, 1u, 0x00283034u },
-    { 0x000147D6u, 2u, 0x00283034u },
-    { 0x000147E3u, 1u, 0x00283034u },
-    { 0x00014886u, 2u, 0x00283038u },
-    { 0x0001488Du, 2u, 0x0028300Cu },
-    { 0x0001601Fu, 2u, 0x00282FF0u },
-    { 0x00016058u, 2u, 0x00282FF0u },
-    { 0x0001606Au, 2u, 0x00283084u },
-    { 0x0001617Cu, 2u, 0x00283080u },
-    { 0x000161A2u, 2u, 0x00283080u },
-    { 0x000161FFu, 2u, 0x0028307Cu },
-    { 0x00017162u, 1u, 0x002B27F8u },
-    { 0x00017199u, 1u, 0x002B27F8u },
-    { 0x000171B4u, 2u, 0x0028300Cu },
-    { 0x000175DAu, 1u, 0x00010130u },
-    { 0x000175FCu, 2u, 0x00566168u },
-    { 0x00017609u, 2u, 0x002830E4u },
-    { 0x00017894u, 2u, 0x00282FE0u },
-    { 0x00017F39u, 1u, 0x00010118u },
-    { 0x00017F8Eu, 2u, 0x00283038u },
-    { 0x0001861Au, 2u, 0x00283004u },
-    { 0x00018642u, 2u, 0x00283000u },
-    { 0x0001864Du, 2u, 0x00282FE0u },
-    { 0x00018693u, 1u, 0x00283034u },
-    { 0x000188B9u, 2u, 0x00010118u },
-    { 0x00018A18u, 2u, 0x00283038u },
-    { 0x00018A1Fu, 2u, 0x0028300Cu },
-    { 0x00018FE0u, 1u, 0x00566154u },
-    { 0x0001917Au, 2u, 0x00283124u },
-    { 0x0001919Cu, 2u, 0x00283124u },
-    { 0x000191E9u, 2u, 0x00283120u },
-    { 0x00019391u, 2u, 0x00283124u },
-    { 0x0001954Fu, 2u, 0x00283128u },
-    { 0x000195BEu, 2u, 0x00283128u },
-    { 0x0001969Bu, 2u, 0x00283128u },
-    { 0x0001971Fu, 2u, 0x00283128u },
-    { 0x00019D1Au, 2u, 0x00283124u },
-    { 0x00019E6Eu, 2u, 0x00283124u },
-    { 0x00019F48u, 2u, 0x00283120u },
-    { 0x0001A070u, 2u, 0x00283120u },
-    { 0x0001AE5Fu, 2u, 0x002830C0u },
-    { 0x0001B410u, 2u, 0x002830BCu },
-    { 0x0001B47Bu, 2u, 0x00283124u },
-    { 0x0001B527u, 2u, 0x002830D8u },
-    { 0x0001B58Cu, 2u, 0x002830BCu },
-    { 0x0001B605u, 2u, 0x002830C0u },
-    { 0x0001B73Eu, 2u, 0x002830BCu },
-    { 0x0001B759u, 2u, 0x00283120u },
-    { 0x0001B79Cu, 2u, 0x002830BCu },
-    { 0x00096029u, 2u, 0x0057CA80u },
-    { 0x00096080u, 2u, 0x002D0840u },
-    { 0x00097C03u, 2u, 0x0057CA80u },
-    { 0x00097F46u, 2u, 0x0057CA80u },
-    { 0x00097F67u, 2u, 0x002D0840u },
-    { 0x00098D7Cu, 3u, 0x0057C980u },
-    { 0x00098F0Du, 3u, 0x000A4EFFu },
-    { 0x00099092u, 2u, 0x0029C768u },
-    { 0x000992D5u, 2u, 0x0029C8F0u },
-    { 0x000992F0u, 2u, 0x0029C8FCu },
-    { 0x00099301u, 2u, 0x0029C8F4u },
-    { 0x0009A090u, 1u, 0x002D083Cu },
-    { 0x0009A0F3u, 2u, 0x0029C764u },
-    { 0x0009A1EFu, 3u, 0x0029C780u },
-    { 0x0009BBF4u, 3u, 0x0029CA00u },
-    { 0x0009BBFBu, 2u, 0x002830BCu },
-    { 0x0009BD06u, 2u, 0x002830C0u },
-    { 0x0009D61Eu, 2u, 0x002831A4u },
-    { 0x0009D632u, 1u, 0x002B27F8u },
-    { 0x0009E4BAu, 3u, 0x0057C980u },
-    { 0x0009E4EFu, 2u, 0x0057C964u },
-    { 0x0009E75Fu, 2u, 0x0057C964u },
-    { 0x0009E830u, 2u, 0x002D0808u },
-    { 0x0009E884u, 2u, 0x0057C964u },
-    { 0x0009E897u, 3u, 0x0057C980u },
-    { 0x0009E996u, 3u, 0x0029CB68u },
-    { 0x0009E9CAu, 1u, 0x002D0A20u },
-    { 0x0009F232u, 3u, 0x0057C980u },
-    { 0x0009F5DCu, 2u, 0x002D0A24u },
-    { 0x0009F5E5u, 2u, 0x002D0A24u },
-    { 0x0009F5F9u, 2u, 0x002D0A24u },
-    { 0x0009FDA4u, 2u, 0x0057C964u },
-    { 0x0009FDB4u, 3u, 0x0057C980u },
-    { 0x0009FE0Cu, 3u, 0x0057C980u },
-    { 0x0009FE69u, 3u, 0x0057C980u },
-    { 0x0009FE75u, 2u, 0x002830C0u },
-    { 0x0009FEBCu, 3u, 0x0057C980u },
-    { 0x0009FECBu, 2u, 0x002830BCu },
-    { 0x0009FF43u, 3u, 0x0057C980u },
-    { 0x000A0493u, 3u, 0x0057C980u },
-    { 0x0024D2A0u, 2u, 0x00010118u },
-    { 0x0024D2A6u, 1u, 0x00010108u },
-    { 0x0024D2B8u, 1u, 0x002836F4u },
-    { 0x0024D2BDu, 2u, 0x002836E4u },
-    { 0x0024D2C3u, 2u, 0x002836E8u },
-    { 0x0024D2D8u, 1u, 0x00566168u },
-    { 0x0024D2E0u, 2u, 0x002836ECu },
+    { 0x00015033u, 1u, 0x00283034u },
+    { 0x00015044u, 2u, 0x00283030u },
+    { 0x0001504Au, 2u, 0x00283034u },
+    { 0x00015052u, 1u, 0x00283034u },
+    { 0x0001506Bu, 2u, 0x0028302Cu },
+    { 0x0001507Du, 1u, 0x00283034u },
+    { 0x00015094u, 1u, 0x00283034u },
+    { 0x000150A6u, 2u, 0x00283034u },
+    { 0x000150B3u, 1u, 0x00283034u },
+    { 0x00015156u, 2u, 0x00283038u },
+    { 0x0001515Du, 2u, 0x0028300Cu },
+    { 0x000168EFu, 2u, 0x00282FF0u },
+    { 0x00016928u, 2u, 0x00282FF0u },
+    { 0x0001693Au, 2u, 0x00283084u },
+    { 0x00016A4Cu, 2u, 0x00283080u },
+    { 0x00016A72u, 2u, 0x00283080u },
+    { 0x00016ACFu, 2u, 0x0028307Cu },
+    { 0x00017A32u, 1u, 0x002B27F8u },
+    { 0x00017A69u, 1u, 0x002B27F8u },
+    { 0x00017A84u, 2u, 0x0028300Cu },
+    { 0x00017EAAu, 1u, 0x00010130u },
+    { 0x00017ECCu, 2u, 0x00566168u },
+    { 0x00017ED9u, 2u, 0x002830E4u },
+    { 0x00018164u, 2u, 0x00282FE0u },
+    { 0x00018809u, 1u, 0x00010118u },
+    { 0x0001885Eu, 2u, 0x00283038u },
+    { 0x00018EEAu, 2u, 0x00283004u },
+    { 0x00018F12u, 2u, 0x00283000u },
+    { 0x00018F1Du, 2u, 0x00282FE0u },
+    { 0x00018F63u, 1u, 0x00283034u },
+    { 0x00019189u, 2u, 0x00010118u },
+    { 0x000192E8u, 2u, 0x00283038u },
+    { 0x000192EFu, 2u, 0x0028300Cu },
+    { 0x000198B0u, 1u, 0x00566154u },
+    { 0x00019A4Au, 2u, 0x00283124u },
+    { 0x00019A6Cu, 2u, 0x00283124u },
+    { 0x00019AB9u, 2u, 0x00283120u },
+    { 0x00019C61u, 2u, 0x00283124u },
+    { 0x00019E1Fu, 2u, 0x00283128u },
+    { 0x00019E8Eu, 2u, 0x00283128u },
+    { 0x00019F6Bu, 2u, 0x00283128u },
+    { 0x00019FEFu, 2u, 0x00283128u },
+    { 0x0001A5EAu, 2u, 0x00283124u },
+    { 0x0001A73Eu, 2u, 0x00283124u },
+    { 0x0001A818u, 2u, 0x00283120u },
+    { 0x0001A940u, 2u, 0x00283120u },
+    { 0x0001B72Fu, 2u, 0x002830C0u },
+    { 0x0001BCE0u, 2u, 0x002830BCu },
+    { 0x0001BD4Bu, 2u, 0x00283124u },
+    { 0x0001BDF7u, 2u, 0x002830D8u },
+    { 0x0001BE5Cu, 2u, 0x002830BCu },
+    { 0x0001BED5u, 2u, 0x002830C0u },
+    { 0x0001C00Eu, 2u, 0x002830BCu },
+    { 0x0001C029u, 2u, 0x00283120u },
+    { 0x0001C06Cu, 2u, 0x002830BCu },
+    { 0x000968F9u, 2u, 0x0057CA80u },
+    { 0x00096950u, 2u, 0x002D0840u },
+    { 0x000984D3u, 2u, 0x0057CA80u },
+    { 0x00098816u, 2u, 0x0057CA80u },
+    { 0x00098837u, 2u, 0x002D0840u },
+    { 0x0009964Cu, 3u, 0x0057C980u },
+    { 0x000997DDu, 3u, 0x000A4EFFu },
+    { 0x00099962u, 2u, 0x0029C768u },
+    { 0x00099BA5u, 2u, 0x0029C8F0u },
+    { 0x00099BC0u, 2u, 0x0029C8FCu },
+    { 0x00099BD1u, 2u, 0x0029C8F4u },
+    { 0x0009A960u, 1u, 0x002D083Cu },
+    { 0x0009A9C3u, 2u, 0x0029C764u },
+    { 0x0009AABFu, 3u, 0x0029C780u },
+    { 0x0009C4C4u, 3u, 0x0029CA00u },
+    { 0x0009C4CBu, 2u, 0x002830BCu },
+    { 0x0009C5D6u, 2u, 0x002830C0u },
+    { 0x0009DEEEu, 2u, 0x002831A4u },
+    { 0x0009DF02u, 1u, 0x002B27F8u },
+    { 0x0009ED8Au, 3u, 0x0057C980u },
+    { 0x0009EDBFu, 2u, 0x0057C964u },
+    { 0x0009F02Fu, 2u, 0x0057C964u },
+    { 0x0009F100u, 2u, 0x002D0808u },
+    { 0x0009F154u, 2u, 0x0057C964u },
+    { 0x0009F167u, 3u, 0x0057C980u },
+    { 0x0009F266u, 3u, 0x0029CB68u },
+    { 0x0009F29Au, 1u, 0x002D0A20u },
+    { 0x0009FB02u, 3u, 0x0057C980u },
+    { 0x0009FEACu, 2u, 0x002D0A24u },
+    { 0x0009FEB5u, 2u, 0x002D0A24u },
+    { 0x0009FEC9u, 2u, 0x002D0A24u },
+    { 0x000A0674u, 2u, 0x0057C964u },
+    { 0x000A0684u, 3u, 0x0057C980u },
+    { 0x000A06DCu, 3u, 0x0057C980u },
+    { 0x000A0739u, 3u, 0x0057C980u },
+    { 0x000A0745u, 2u, 0x002830C0u },
+    { 0x000A078Cu, 3u, 0x0057C980u },
+    { 0x000A079Bu, 2u, 0x002830BCu },
+    { 0x000A0813u, 3u, 0x0057C980u },
+    { 0x000A0D63u, 3u, 0x0057C980u },
+    { 0x0024DB70u, 2u, 0x00010118u },
+    { 0x0024DB76u, 1u, 0x00010108u },
+    { 0x0024DB88u, 1u, 0x002836F4u },
+    { 0x0024DB8Du, 2u, 0x002836E4u },
+    { 0x0024DB93u, 2u, 0x002836E8u },
+    { 0x0024DBA8u, 1u, 0x00566168u },
+    { 0x0024DBB0u, 2u, 0x002836ECu },
+};
+static const BlackGuestPointerPatch black_xbox_data_pointer_patches[] = {
+    { 0x002836EC, 0x002B27F8, 0u },
+    { 0x0029C764, 0x000A4FF5, 1u },
+    { 0x0029C768, 0x002874B0, 0u },
+    { 0x0029C8F0, 0x000A9C55, 1u },
+    { 0x0029C8F4, 0x000A9C55, 1u },
+    { 0x0029C8FC, 0x000A9C55, 1u },
+};
+static const BlackGuestBranchPatch black_guest_branch_patches[] = {
+    { 0x0001500Bu, 0x0002696Bu },
+    { 0x000150DDu, 0x00026C51u },
+    { 0x00015103u, 0x00026C51u },
+    { 0x00015134u, 0x00022BCCu },
+    { 0x00016968u, 0x0002539Du },
+    { 0x00016A7Du, 0x0002539Du },
+    { 0x00016AB9u, 0x0002536Fu },
+    { 0x00016AEAu, 0x0002536Fu },
+    { 0x00016AF5u, 0x0002539Du },
+    { 0x00017A8Du, 0x0002536Fu },
+    { 0x00017EFEu, 0x0002539Du },
+    { 0x00018174u, 0x0002539Du },
+    { 0x00018852u, 0x00022B8Au },
+    { 0x00018F48u, 0x00026C51u },
+    { 0x000191AEu, 0x00022CADu },
+    { 0x000191D3u, 0x000266D6u },
+    { 0x0001927Eu, 0x000A1B43u },
+    { 0x000192ACu, 0x00022BCCu },
+    { 0x000192C7u, 0x00026768u },
+    { 0x00019487u, 0x000A2DA4u },
+    { 0x000194DDu, 0x000A2DDFu },
+    { 0x0001989Cu, 0x00028D34u },
+    { 0x00019B83u, 0x0002721Fu },
+    { 0x00019B9Eu, 0x000270FFu },
+    { 0x00019D16u, 0x0002721Fu },
+    { 0x0001A665u, 0x00027240u },
+    { 0x0001A690u, 0x00027703u },
+    { 0x0001A6E9u, 0x000272D3u },
+    { 0x0001A7D0u, 0x00027C46u },
+    { 0x0001A7F6u, 0x0002745Eu },
+    { 0x0001A802u, 0x00027703u },
+    { 0x0001A84Au, 0x00027703u },
+    { 0x0001A923u, 0x000270FFu },
+    { 0x0001A94Fu, 0x0002721Fu },
+    { 0x0001A967u, 0x00027240u },
+    { 0x0001AACEu, 0x00027703u },
+    { 0x0001B6EAu, 0x000A2DA4u },
+    { 0x0001B870u, 0x00029770u },
+    { 0x0001B933u, 0x00027D64u },
+    { 0x0001BC99u, 0x00027703u },
+    { 0x0001BE06u, 0x00028D21u },
+    { 0x0001BE37u, 0x000A2DDFu },
+    { 0x0001BE77u, 0x000A2DA4u },
+    { 0x0001BEF7u, 0x0002745Eu },
+    { 0x0001BF82u, 0x00027EEBu },
+    { 0x0001BFE5u, 0x00027703u },
+    { 0x0001C03Eu, 0x00028F15u },
+    { 0x0001C046u, 0x000A2DDFu },
+    { 0x00096629u, 0x000A4798u },
+    { 0x0009664Au, 0x000A45F1u },
+    { 0x0009690Bu, 0x00026FE9u },
+    { 0x00096911u, 0x000285B9u },
+    { 0x0009692Bu, 0x000A1DDCu },
+    { 0x0009693Fu, 0x000A5900u },
+    { 0x0009695Au, 0x000A1E03u },
+    { 0x00097C3Fu, 0x000A2FBEu },
+    { 0x000984C7u, 0x000A2DA4u },
+    { 0x000984DEu, 0x000A734Bu },
+    { 0x000984EEu, 0x000A37E0u },
+    { 0x000984FCu, 0x00026FE9u },
+    { 0x00098502u, 0x00026FD2u },
+    { 0x00098507u, 0x000A2DDFu },
+    { 0x00098522u, 0x000A7299u },
+    { 0x00098828u, 0x00026FE9u },
+    { 0x0009882Eu, 0x000285B9u },
+    { 0x00098841u, 0x000A5900u },
+    { 0x00099604u, 0x000A9083u },
+    { 0x0009960Fu, 0x000A903Fu },
+    { 0x00099638u, 0x000A8F94u },
+    { 0x00099670u, 0x000A8D5Eu },
+    { 0x0009968Bu, 0x000A8F94u },
+    { 0x0009997Eu, 0x000A470Au },
+    { 0x00099991u, 0x000A470Au },
+    { 0x00099A75u, 0x000A90ADu },
+    { 0x00099B6Bu, 0x000A1E2Fu },
+    { 0x00099D7Au, 0x000A90E0u },
+    { 0x00099E0Fu, 0x000A473Du },
+    { 0x00099E23u, 0x000A4761u },
+    { 0x00099E3Au, 0x000A473Du },
+    { 0x00099E64u, 0x000A90ADu },
+    { 0x00099E7Bu, 0x000A4761u },
+    { 0x00099E92u, 0x000A4761u },
+    { 0x00099EA7u, 0x000A473Du },
+    { 0x00099EB8u, 0x000A3791u },
+    { 0x0009A9B0u, 0x000A91A4u },
+    { 0x0009A9B9u, 0x000A9178u },
+    { 0x0009AA90u, 0x000A8190u },
+    { 0x0009AAA0u, 0x000A8190u },
+    { 0x0009AAB1u, 0x000A8190u },
+    { 0x0009AAD8u, 0x000A8190u },
+    { 0x0009AAE6u, 0x000A8190u },
+    { 0x0009AB07u, 0x000A8190u },
+    { 0x0009AB15u, 0x000A8190u },
+    { 0x0009AB61u, 0x000A99BBu },
+    { 0x0009AB91u, 0x000A5AA4u },
+    { 0x0009ABD6u, 0x000A5AA4u },
+    { 0x0009C4E7u, 0x000A2DA4u },
+    { 0x0009C4FEu, 0x000A1E2Fu },
+    { 0x0009C50Au, 0x000A5A0Du },
+    { 0x0009C519u, 0x000A734Bu },
+    { 0x0009C52Cu, 0x000A9D4Bu },
+    { 0x0009C538u, 0x000A3791u },
+    { 0x0009C53Du, 0x000A5A0Du },
+    { 0x0009C54Eu, 0x000A2F2Au },
+    { 0x0009C55Fu, 0x000A3791u },
+    { 0x0009C569u, 0x000A7342u },
+    { 0x0009C571u, 0x000A2DDFu },
+    { 0x0009C5A2u, 0x000A7299u },
+    { 0x0009C5C2u, 0x000A72ABu },
+    { 0x0009C5CEu, 0x000A594Bu },
+    { 0x0009DF2Bu, 0x000A3A37u },
+    { 0x0009DF48u, 0x0002575Bu },
+    { 0x0009DF57u, 0x000A594Bu },
+    { 0x0009ED36u, 0x000AA3F7u },
+    { 0x0009ED41u, 0x000A5A0Du },
+    { 0x0009ED5Du, 0x000243E1u },
+    { 0x0009ED69u, 0x00025347u },
+    { 0x0009ED77u, 0x000A5A1Fu },
+    { 0x0009EDB7u, 0x000A2DA4u },
+    { 0x0009EDE8u, 0x000AA438u },
+    { 0x0009EE02u, 0x000A8CECu },
+    { 0x0009EE0Fu, 0x000A5A0Du },
+    { 0x0009EE1Au, 0x000A5A16u },
+    { 0x0009EE2Au, 0x000A8DE5u },
+    { 0x0009EE51u, 0x000AA4D8u },
+    { 0x0009EED9u, 0x000AA4FAu },
+    { 0x0009EF59u, 0x00024287u },
+    { 0x0009EF7Bu, 0x00025347u },
+    { 0x0009EF9Du, 0x000A5A0Du },
+    { 0x0009EFA8u, 0x000A5A16u },
+    { 0x0009EFBEu, 0x00024287u },
+    { 0x0009EFD2u, 0x00025347u },
+    { 0x0009EFDFu, 0x000A5A1Fu },
+    { 0x0009EFFCu, 0x000A5A0Du },
+    { 0x0009F007u, 0x000A5A16u },
+    { 0x0009F027u, 0x000A2DA4u },
+    { 0x0009F058u, 0x000AA438u },
+    { 0x0009F072u, 0x000A8E09u },
+    { 0x0009F07Fu, 0x000A5A0Du },
+    { 0x0009F08Au, 0x000A5A16u },
+    { 0x0009F09Au, 0x000A901Bu },
+    { 0x0009F0C1u, 0x000AA4D8u },
+    { 0x0009F10Bu, 0x000A1E2Fu },
+    { 0x0009F196u, 0x000A5A0Du },
+    { 0x0009F286u, 0x00022522u },
+    { 0x0009F295u, 0x000A9178u },
+    { 0x0009F2ABu, 0x000A9178u },
+    { 0x0009FB26u, 0x000A90ADu },
+    { 0x0009FB34u, 0x000A5A0Du },
+    { 0x0009FB69u, 0x000A45F1u },
+    { 0x0009FB99u, 0x000AA9BBu },
+    { 0x0009FEA7u, 0x000A2DA4u },
+    { 0x0009FEFBu, 0x000A2DDFu },
+    { 0x000A069Au, 0x000A5A0Du },
+    { 0x000A06A5u, 0x000A5A16u },
+    { 0x000A06C7u, 0x000A2DA4u },
+    { 0x000A06EFu, 0x000A734Bu },
+    { 0x000A0706u, 0x000A9D4Bu },
+    { 0x000A0717u, 0x000A2F2Au },
+    { 0x000A0729u, 0x000AA4CFu },
+    { 0x000A074Eu, 0x000A2DDFu },
+    { 0x000A0772u, 0x000A7299u },
+    { 0x000A07C7u, 0x000AA3F7u },
+    { 0x000A07D4u, 0x000A5A0Du },
+    { 0x000A07ECu, 0x000243E1u },
+    { 0x000A07F8u, 0x00025347u },
+    { 0x000A0802u, 0x000A5A1Fu },
+    { 0x000A0D17u, 0x000A9083u },
+    { 0x000A0D22u, 0x000A903Fu },
+    { 0x000A0D4Fu, 0x000A8F94u },
+    { 0x000A0D86u, 0x000A8D5Eu },
+    { 0x000A0DA9u, 0x000A8F94u },
+    { 0x0024DBC4u, 0x000256EDu },
+    { 0x0024DBD4u, 0x00026053u },
+    { 0x0024DBDAu, 0x00025987u },
+};
+static const BlackGuestImmediatePatch black_guest_immediate_patches[] = {
+    { 0x00014FE1u, 0x00296BA0u },
+    { 0x00014FEBu, 0x00296BA4u },
+    { 0x00015079u, 0x00283334u },
+    { 0x00018EE6u, 0x00297094u },
+    { 0x00018F43u, 0x002836ACu },
+    { 0x00019239u, 0x002970ECu },
+    { 0x0001926Du, 0x002970CCu },
+    { 0x00019272u, 0x00290D00u },
+    { 0x00019483u, 0x002836D8u },
+    { 0x00019A85u, 0x00010000u },
+    { 0x0001B6E6u, 0x00283710u },
+    { 0x0001BE73u, 0x00283720u },
+    { 0x000984C3u, 0x00287260u },
+    { 0x00099A0Eu, 0x00287304u },
+    { 0x00099B25u, 0x002872FCu },
+    { 0x00099C55u, 0x002872FCu },
+    { 0x0009C4E3u, 0x00287930u },
+    { 0x0009DF1Au, 0x0057C960u },
+    { 0x0009DF3Du, 0x0029CC30u },
+    { 0x0009EDB3u, 0x002879F8u },
+    { 0x0009F023u, 0x00287A08u },
+    { 0x0009FEA3u, 0x00287D88u },
+    { 0x000A06C3u, 0x00287E08u },
 };
 static const BlackXboxImportSlot black_xbox_import_slots[] = {
     { 0x00283038u, "HalReturnToFirmware" },
@@ -137,59 +351,59 @@ static const BlackXboxImportSlot black_xbox_import_slots[] = {
     { 0x002830D8u, "RtlRaiseException" },
 };
 static const BlackXboxImportCallsite black_xbox_import_callsites[] = {
-    { 0x0001477Au, "MmAllocateContiguousMemory" },
-    { 0x000147A1u, "MmPersistContiguousMemory" },
-    { 0x0001488Cu, "HalReturnToFirmware" },
-    { 0x00014893u, "RtlNtStatusToDosError" },
-    { 0x00016025u, "NtWriteFile" },
-    { 0x0001605Eu, "NtWriteFile" },
-    { 0x00016070u, "NtWaitForSingleObject" },
-    { 0x00016182u, "NtQueryInformationFile" },
-    { 0x000161A8u, "NtQueryInformationFile" },
-    { 0x00016205u, "NtSetInformationFile" },
-    { 0x000171BAu, "RtlNtStatusToDosError" },
-    { 0x0001760Fu, "PsCreateSystemThreadEx" },
-    { 0x0001789Au, "NtClose" },
-    { 0x00017F94u, "HalReturnToFirmware" },
-    { 0x00018620u, "NtOpenSymbolicLinkObject" },
-    { 0x00018648u, "NtQuerySymbolicLinkObject" },
-    { 0x00018653u, "NtClose" },
-    { 0x00018A1Eu, "HalReturnToFirmware" },
-    { 0x00018A25u, "RtlNtStatusToDosError" },
-    { 0x00019180u, "NtAllocateVirtualMemory" },
-    { 0x000191BEu, "NtAllocateVirtualMemory" },
-    { 0x000191D8u, "NtAllocateVirtualMemory" },
-    { 0x000191EFu, "NtFreeVirtualMemory" },
-    { 0x00019397u, "NtAllocateVirtualMemory" },
-    { 0x00019555u, "RtlCompareMemoryUlong" },
-    { 0x000195C4u, "RtlCompareMemoryUlong" },
-    { 0x000196A1u, "RtlCompareMemoryUlong" },
-    { 0x00019725u, "RtlCompareMemoryUlong" },
-    { 0x00019D20u, "NtAllocateVirtualMemory" },
-    { 0x00019E88u, "NtAllocateVirtualMemory" },
-    { 0x00019EAEu, "NtAllocateVirtualMemory" },
-    { 0x00019EE3u, "NtAllocateVirtualMemory" },
-    { 0x00019F4Eu, "NtFreeVirtualMemory" },
-    { 0x0001A076u, "NtFreeVirtualMemory" },
-    { 0x0001AE65u, "RtlEnterCriticalSection" },
-    { 0x0001B416u, "RtlLeaveCriticalSection" },
-    { 0x0001B481u, "NtAllocateVirtualMemory" },
-    { 0x0001B52Du, "RtlRaiseException" },
-    { 0x0001B592u, "RtlLeaveCriticalSection" },
-    { 0x0001B60Bu, "RtlEnterCriticalSection" },
-    { 0x0001B744u, "RtlLeaveCriticalSection" },
-    { 0x0001B75Fu, "NtFreeVirtualMemory" },
-    { 0x0001B7A2u, "RtlLeaveCriticalSection" },
-    { 0x0009BC01u, "RtlLeaveCriticalSection" },
-    { 0x0009BD0Cu, "RtlEnterCriticalSection" },
-    { 0x0009D624u, "KeBugCheck" },
-    { 0x0009FE7Bu, "RtlEnterCriticalSection" },
-    { 0x0009FED1u, "RtlLeaveCriticalSection" },
+    { 0x0001504Au, "MmAllocateContiguousMemory" },
+    { 0x00015071u, "MmPersistContiguousMemory" },
+    { 0x0001515Cu, "HalReturnToFirmware" },
+    { 0x00015163u, "RtlNtStatusToDosError" },
+    { 0x000168F5u, "NtWriteFile" },
+    { 0x0001692Eu, "NtWriteFile" },
+    { 0x00016940u, "NtWaitForSingleObject" },
+    { 0x00016A52u, "NtQueryInformationFile" },
+    { 0x00016A78u, "NtQueryInformationFile" },
+    { 0x00016AD5u, "NtSetInformationFile" },
+    { 0x00017A8Au, "RtlNtStatusToDosError" },
+    { 0x00017EDFu, "PsCreateSystemThreadEx" },
+    { 0x0001816Au, "NtClose" },
+    { 0x00018864u, "HalReturnToFirmware" },
+    { 0x00018EF0u, "NtOpenSymbolicLinkObject" },
+    { 0x00018F18u, "NtQuerySymbolicLinkObject" },
+    { 0x00018F23u, "NtClose" },
+    { 0x000192EEu, "HalReturnToFirmware" },
+    { 0x000192F5u, "RtlNtStatusToDosError" },
+    { 0x00019A50u, "NtAllocateVirtualMemory" },
+    { 0x00019A8Eu, "NtAllocateVirtualMemory" },
+    { 0x00019AA8u, "NtAllocateVirtualMemory" },
+    { 0x00019ABFu, "NtFreeVirtualMemory" },
+    { 0x00019C67u, "NtAllocateVirtualMemory" },
+    { 0x00019E25u, "RtlCompareMemoryUlong" },
+    { 0x00019E94u, "RtlCompareMemoryUlong" },
+    { 0x00019F71u, "RtlCompareMemoryUlong" },
+    { 0x00019FF5u, "RtlCompareMemoryUlong" },
+    { 0x0001A5F0u, "NtAllocateVirtualMemory" },
+    { 0x0001A758u, "NtAllocateVirtualMemory" },
+    { 0x0001A77Eu, "NtAllocateVirtualMemory" },
+    { 0x0001A7B3u, "NtAllocateVirtualMemory" },
+    { 0x0001A81Eu, "NtFreeVirtualMemory" },
+    { 0x0001A946u, "NtFreeVirtualMemory" },
+    { 0x0001B735u, "RtlEnterCriticalSection" },
+    { 0x0001BCE6u, "RtlLeaveCriticalSection" },
+    { 0x0001BD51u, "NtAllocateVirtualMemory" },
+    { 0x0001BDFDu, "RtlRaiseException" },
+    { 0x0001BE62u, "RtlLeaveCriticalSection" },
+    { 0x0001BEDBu, "RtlEnterCriticalSection" },
+    { 0x0001C014u, "RtlLeaveCriticalSection" },
+    { 0x0001C02Fu, "NtFreeVirtualMemory" },
+    { 0x0001C072u, "RtlLeaveCriticalSection" },
+    { 0x0009C4D1u, "RtlLeaveCriticalSection" },
+    { 0x0009C5DCu, "RtlEnterCriticalSection" },
+    { 0x0009DEF4u, "KeBugCheck" },
+    { 0x000A074Bu, "RtlEnterCriticalSection" },
+    { 0x000A07A1u, "RtlLeaveCriticalSection" },
 };
 
-
+/* END_GENERATED_BOOT_RUNTIME_TABLES */
 /* BEGIN_GENERATED_GUEST_FUNCTION_MAP */
-/* Lote 001/137 — funções 1 a 100. */
+/* Lote 001/137 â€” funÃ§Ãµes 1 a 100. */
 extern void __cdecl sub_00011000(void);
 extern void __cdecl sub_00011040(void);
 extern void __cdecl sub_00011080(void);
@@ -290,7 +504,7 @@ extern void __cdecl sub_00013F80(void);
 extern void __cdecl sub_00013FF0(void);
 extern void __cdecl sub_00014010(void);
 extern void __cdecl sub_00014020(void);
-/* Lote 002/137 — funções 101 a 200. */
+/* Lote 002/137 â€” funÃ§Ãµes 101 a 200. */
 extern void __cdecl sub_00014030(void);
 extern void __cdecl sub_00014090(void);
 extern void __cdecl sub_000140E0(void);
@@ -391,7 +605,7 @@ extern void __cdecl sub_00016B00(void);
 extern void __cdecl sub_00016B10(void);
 extern void __cdecl sub_00016B20(void);
 extern void __cdecl sub_00016B30(void);
-/* Lote 003/137 — funções 201 a 300. */
+/* Lote 003/137 â€” funÃ§Ãµes 201 a 300. */
 extern void __cdecl sub_00016B50(void);
 extern void __cdecl sub_00016B60(void);
 extern void __cdecl sub_00016BB0(void);
@@ -492,7 +706,7 @@ extern void __cdecl sub_00018BA0(void);
 extern void __cdecl sub_00018BB0(void);
 extern void __cdecl sub_00018BD0(void);
 extern void __cdecl sub_00018C40(void);
-/* Lote 004/137 — funções 301 a 400. */
+/* Lote 004/137 â€” funÃ§Ãµes 301 a 400. */
 extern void __cdecl sub_00018CA0(void);
 extern void __cdecl sub_00018CB0(void);
 extern void __cdecl sub_00018CC0(void);
@@ -593,7 +807,7 @@ extern void __cdecl sub_0001EC20(void);
 extern void __cdecl sub_0001ED30(void);
 extern void __cdecl sub_0001EEC0(void);
 extern void __cdecl sub_0001EF10(void);
-/* Lote 005/137 — funções 401 a 500. */
+/* Lote 005/137 â€” funÃ§Ãµes 401 a 500. */
 extern void __cdecl sub_0001F090(void);
 extern void __cdecl sub_0001F1A0(void);
 extern void __cdecl sub_0001F290(void);
@@ -694,7 +908,7 @@ extern void __cdecl sub_000222E0(void);
 extern void __cdecl sub_00022330(void);
 extern void __cdecl sub_00022340(void);
 extern void __cdecl sub_000223B0(void);
-/* Lote 006/137 — funções 501 a 600. */
+/* Lote 006/137 â€” funÃ§Ãµes 501 a 600. */
 extern void __cdecl sub_00022424(void);
 extern void __cdecl sub_00022522(void);
 extern void __cdecl sub_00022554(void);
@@ -795,7 +1009,7 @@ extern void __cdecl sub_0002551D(void);
 extern void __cdecl sub_00025543(void);
 extern void __cdecl sub_00025599(void);
 extern void __cdecl sub_000255AC(void);
-/* Lote 007/137 — funções 601 a 700. */
+/* Lote 007/137 â€” funÃ§Ãµes 601 a 700. */
 extern void __cdecl sub_000255BE(void);
 extern void __cdecl sub_000255D0(void);
 extern void __cdecl sub_00025619(void);
@@ -896,7 +1110,7 @@ extern void __cdecl sub_00029991(void);
 extern void __cdecl sub_00029B24(void);
 extern void __cdecl sub_00029EC2(void);
 extern void __cdecl sub_00029EC8(void);
-/* Lote 008/137 — funções 701 a 800. */
+/* Lote 008/137 â€” funÃ§Ãµes 701 a 800. */
 extern void __cdecl sub_00029ECE(void);
 extern void __cdecl sub_00029ED4(void);
 extern void __cdecl sub_00029EDA(void);
@@ -997,7 +1211,7 @@ extern void __cdecl sub_0002F670(void);
 extern void __cdecl sub_0002F6E0(void);
 extern void __cdecl sub_0002F700(void);
 extern void __cdecl sub_0002F760(void);
-/* Lote 009/137 — funções 801 a 900. */
+/* Lote 009/137 â€” funÃ§Ãµes 801 a 900. */
 extern void __cdecl sub_0002F780(void);
 extern void __cdecl sub_0002F7F0(void);
 extern void __cdecl sub_0002F850(void);
@@ -1098,7 +1312,7 @@ extern void __cdecl sub_00033170(void);
 extern void __cdecl sub_000331A0(void);
 extern void __cdecl sub_000331B0(void);
 extern void __cdecl sub_00033210(void);
-/* Lote 010/137 — funções 901 a 1000. */
+/* Lote 010/137 â€” funÃ§Ãµes 901 a 1000. */
 extern void __cdecl sub_00033250(void);
 extern void __cdecl sub_00033290(void);
 extern void __cdecl sub_00033350(void);
@@ -1199,7 +1413,7 @@ extern void __cdecl sub_00038770(void);
 extern void __cdecl sub_00038A90(void);
 extern void __cdecl sub_00038AB0(void);
 extern void __cdecl sub_00038AF0(void);
-/* Lote 011/137 — funções 1001 a 1100. */
+/* Lote 011/137 â€” funÃ§Ãµes 1001 a 1100. */
 extern void __cdecl sub_00038B00(void);
 extern void __cdecl sub_00038B20(void);
 extern void __cdecl sub_00038B50(void);
@@ -1300,7 +1514,7 @@ extern void __cdecl sub_0003E620(void);
 extern void __cdecl sub_0003E640(void);
 extern void __cdecl sub_0003E650(void);
 extern void __cdecl sub_0003E660(void);
-/* Lote 012/137 — funções 1101 a 1200. */
+/* Lote 012/137 â€” funÃ§Ãµes 1101 a 1200. */
 extern void __cdecl sub_0003E6E0(void);
 extern void __cdecl sub_0003E800(void);
 extern void __cdecl sub_0003E870(void);
@@ -1401,7 +1615,7 @@ extern void __cdecl sub_00040B40(void);
 extern void __cdecl sub_00040C50(void);
 extern void __cdecl sub_00040D50(void);
 extern void __cdecl sub_00041040(void);
-/* Lote 013/137 — funções 1201 a 1300. */
+/* Lote 013/137 â€” funÃ§Ãµes 1201 a 1300. */
 extern void __cdecl sub_000417F8(void);
 extern void __cdecl sub_00041870(void);
 extern void __cdecl sub_00041AE0(void);
@@ -1502,7 +1716,7 @@ extern void __cdecl sub_00043DA0(void);
 extern void __cdecl sub_00043DE0(void);
 extern void __cdecl sub_00043E50(void);
 extern void __cdecl sub_00043EC0(void);
-/* Lote 014/137 — funções 1301 a 1400. */
+/* Lote 014/137 â€” funÃ§Ãµes 1301 a 1400. */
 extern void __cdecl sub_00043EE0(void);
 extern void __cdecl sub_00043F90(void);
 extern void __cdecl sub_00044210(void);
@@ -1603,7 +1817,7 @@ extern void __cdecl sub_00049B90(void);
 extern void __cdecl sub_00049BB0(void);
 extern void __cdecl sub_00049BD0(void);
 extern void __cdecl sub_00049D10(void);
-/* Lote 015/137 — funções 1401 a 1500. */
+/* Lote 015/137 â€” funÃ§Ãµes 1401 a 1500. */
 extern void __cdecl sub_00049D60(void);
 extern void __cdecl sub_00049D70(void);
 extern void __cdecl sub_00049E00(void);
@@ -1704,7 +1918,7 @@ extern void __cdecl sub_0004CA80(void);
 extern void __cdecl sub_0004CA90(void);
 extern void __cdecl sub_0004CAE0(void);
 extern void __cdecl sub_0004CAF0(void);
-/* Lote 016/137 — funções 1501 a 1600. */
+/* Lote 016/137 â€” funÃ§Ãµes 1501 a 1600. */
 extern void __cdecl sub_0004CB40(void);
 extern void __cdecl sub_0004CB80(void);
 extern void __cdecl sub_0004CB90(void);
@@ -1805,7 +2019,7 @@ extern void __cdecl sub_0004FD80(void);
 extern void __cdecl sub_0004FDD0(void);
 extern void __cdecl sub_0004FE20(void);
 extern void __cdecl sub_0004FF00(void);
-/* Lote 017/137 — funções 1601 a 1700. */
+/* Lote 017/137 â€” funÃ§Ãµes 1601 a 1700. */
 extern void __cdecl sub_0004FFE0(void);
 extern void __cdecl sub_00050001(void);
 extern void __cdecl sub_000501B0(void);
@@ -1906,7 +2120,7 @@ extern void __cdecl sub_00052A70(void);
 extern void __cdecl sub_00052AC0(void);
 extern void __cdecl sub_00052B40(void);
 extern void __cdecl sub_00052BC0(void);
-/* Lote 018/137 — funções 1701 a 1800. */
+/* Lote 018/137 â€” funÃ§Ãµes 1701 a 1800. */
 extern void __cdecl sub_00052CA0(void);
 extern void __cdecl sub_00052E80(void);
 extern void __cdecl sub_00052ED0(void);
@@ -2007,7 +2221,7 @@ extern void __cdecl sub_000563E0(void);
 extern void __cdecl sub_000564F0(void);
 extern void __cdecl sub_00056580(void);
 extern void __cdecl sub_000565E0(void);
-/* Lote 019/137 — funções 1801 a 1900. */
+/* Lote 019/137 â€” funÃ§Ãµes 1801 a 1900. */
 extern void __cdecl sub_000565F0(void);
 extern void __cdecl sub_00056660(void);
 extern void __cdecl sub_000566B0(void);
@@ -2108,7 +2322,7 @@ extern void __cdecl sub_0005AFD0(void);
 extern void __cdecl sub_0005B020(void);
 extern void __cdecl sub_0005B0F0(void);
 extern void __cdecl sub_0005B150(void);
-/* Lote 020/137 — funções 1901 a 2000. */
+/* Lote 020/137 â€” funÃ§Ãµes 1901 a 2000. */
 extern void __cdecl sub_0005B3E0(void);
 extern void __cdecl sub_0005B490(void);
 extern void __cdecl sub_0005B4B0(void);
@@ -2209,7 +2423,7 @@ extern void __cdecl sub_000601A0(void);
 extern void __cdecl sub_00060310(void);
 extern void __cdecl sub_00060340(void);
 extern void __cdecl sub_00060590(void);
-/* Lote 021/137 — funções 2001 a 2100. */
+/* Lote 021/137 â€” funÃ§Ãµes 2001 a 2100. */
 extern void __cdecl sub_000609C0(void);
 extern void __cdecl sub_00061150(void);
 extern void __cdecl sub_000612F0(void);
@@ -2310,7 +2524,7 @@ extern void __cdecl sub_00067DE0(void);
 extern void __cdecl sub_00067E00(void);
 extern void __cdecl sub_00067E50(void);
 extern void __cdecl sub_00067EA0(void);
-/* Lote 022/137 — funções 2101 a 2200. */
+/* Lote 022/137 â€” funÃ§Ãµes 2101 a 2200. */
 extern void __cdecl sub_00067EC0(void);
 extern void __cdecl sub_00067F60(void);
 extern void __cdecl sub_00067FC0(void);
@@ -2411,7 +2625,7 @@ extern void __cdecl sub_0006FF40(void);
 extern void __cdecl sub_0006FF80(void);
 extern void __cdecl sub_00070004(void);
 extern void __cdecl sub_0007000E(void);
-/* Lote 023/137 — funções 2201 a 2300. */
+/* Lote 023/137 â€” funÃ§Ãµes 2201 a 2300. */
 extern void __cdecl sub_00070030(void);
 extern void __cdecl sub_00070040(void);
 extern void __cdecl sub_000700B0(void);
@@ -2512,7 +2726,7 @@ extern void __cdecl sub_0007C760(void);
 extern void __cdecl sub_0007C820(void);
 extern void __cdecl sub_0007C830(void);
 extern void __cdecl sub_0007C920(void);
-/* Lote 024/137 — funções 2301 a 2400. */
+/* Lote 024/137 â€” funÃ§Ãµes 2301 a 2400. */
 extern void __cdecl sub_0007CA50(void);
 extern void __cdecl sub_0007CCD0(void);
 extern void __cdecl sub_0007CDF0(void);
@@ -2613,7 +2827,7 @@ extern void __cdecl sub_0007FD30(void);
 extern void __cdecl sub_0007FD90(void);
 extern void __cdecl sub_0007FDF0(void);
 extern void __cdecl sub_0007FE10(void);
-/* Lote 025/137 — funções 2401 a 2500. */
+/* Lote 025/137 â€” funÃ§Ãµes 2401 a 2500. */
 extern void __cdecl sub_00080003(void);
 extern void __cdecl sub_00080050(void);
 extern void __cdecl sub_00080065(void);
@@ -2714,7 +2928,7 @@ extern void __cdecl sub_000816F0(void);
 extern void __cdecl sub_00081750(void);
 extern void __cdecl sub_00081820(void);
 extern void __cdecl sub_00081860(void);
-/* Lote 026/137 — funções 2501 a 2600. */
+/* Lote 026/137 â€” funÃ§Ãµes 2501 a 2600. */
 extern void __cdecl sub_000818C0(void);
 extern void __cdecl sub_000819E0(void);
 extern void __cdecl sub_00081A80(void);
@@ -2815,7 +3029,7 @@ extern void __cdecl sub_000841A0(void);
 extern void __cdecl sub_000841C0(void);
 extern void __cdecl sub_000841D0(void);
 extern void __cdecl sub_000841E0(void);
-/* Lote 027/137 — funções 2601 a 2700. */
+/* Lote 027/137 â€” funÃ§Ãµes 2601 a 2700. */
 extern void __cdecl sub_00084210(void);
 extern void __cdecl sub_00084220(void);
 extern void __cdecl sub_00084240(void);
@@ -2916,7 +3130,7 @@ extern void __cdecl sub_00086710(void);
 extern void __cdecl sub_00086730(void);
 extern void __cdecl sub_00086750(void);
 extern void __cdecl sub_00086780(void);
-/* Lote 028/137 — funções 2701 a 2800. */
+/* Lote 028/137 â€” funÃ§Ãµes 2701 a 2800. */
 extern void __cdecl sub_000867B0(void);
 extern void __cdecl sub_000867E0(void);
 extern void __cdecl sub_00086820(void);
@@ -3017,7 +3231,7 @@ extern void __cdecl sub_0008B300(void);
 extern void __cdecl sub_0008B380(void);
 extern void __cdecl sub_0008B3D0(void);
 extern void __cdecl sub_0008B420(void);
-/* Lote 029/137 — funções 2801 a 2900. */
+/* Lote 029/137 â€” funÃ§Ãµes 2801 a 2900. */
 extern void __cdecl sub_0008B450(void);
 extern void __cdecl sub_0008B460(void);
 extern void __cdecl sub_0008B480(void);
@@ -3118,7 +3332,7 @@ extern void __cdecl sub_0008D280(void);
 extern void __cdecl sub_0008D2A0(void);
 extern void __cdecl sub_0008D2D0(void);
 extern void __cdecl sub_0008D300(void);
-/* Lote 030/137 — funções 2901 a 3000. */
+/* Lote 030/137 â€” funÃ§Ãµes 2901 a 3000. */
 extern void __cdecl sub_0008D3A0(void);
 extern void __cdecl sub_0008D3E0(void);
 extern void __cdecl sub_0008D410(void);
@@ -3219,7 +3433,7 @@ extern void __cdecl sub_0008EA00(void);
 extern void __cdecl sub_0008EA20(void);
 extern void __cdecl sub_0008EA40(void);
 extern void __cdecl sub_0008EA60(void);
-/* Lote 031/137 — funções 3001 a 3100. */
+/* Lote 031/137 â€” funÃ§Ãµes 3001 a 3100. */
 extern void __cdecl sub_0008EA80(void);
 extern void __cdecl sub_0008EAA0(void);
 extern void __cdecl sub_0008EAC0(void);
@@ -3320,7 +3534,7 @@ extern void __cdecl sub_00092A70(void);
 extern void __cdecl sub_00092B20(void);
 extern void __cdecl sub_00092B60(void);
 extern void __cdecl sub_00092BA0(void);
-/* Lote 032/137 — funções 3101 a 3200. */
+/* Lote 032/137 â€” funÃ§Ãµes 3101 a 3200. */
 extern void __cdecl sub_00092C40(void);
 extern void __cdecl sub_00092C60(void);
 extern void __cdecl sub_00092CA0(void);
@@ -3421,7 +3635,7 @@ extern void __cdecl sub_00096FD0(void);
 extern void __cdecl sub_00097050(void);
 extern void __cdecl sub_000970C0(void);
 extern void __cdecl sub_00097150(void);
-/* Lote 033/137 — funções 3201 a 3300. */
+/* Lote 033/137 â€” funÃ§Ãµes 3201 a 3300. */
 extern void __cdecl sub_00097240(void);
 extern void __cdecl sub_00097380(void);
 extern void __cdecl sub_00097410(void);
@@ -3522,7 +3736,7 @@ extern void __cdecl sub_0009B810(void);
 extern void __cdecl sub_0009B890(void);
 extern void __cdecl sub_0009B910(void);
 extern void __cdecl sub_0009B990(void);
-/* Lote 034/137 — funções 3301 a 3400. */
+/* Lote 034/137 â€” funÃ§Ãµes 3301 a 3400. */
 extern void __cdecl sub_0009BA10(void);
 extern void __cdecl sub_0009BA20(void);
 extern void __fastcall sub_0009BA50(uint32_t arg0);
@@ -3623,7 +3837,7 @@ extern void __cdecl sub_0009FCE6(void);
 extern void __cdecl sub_0009FD20(void);
 extern void __cdecl sub_0009FD60(void);
 extern void __cdecl sub_0009FD9D(void);
-/* Lote 035/137 — funções 3401 a 3500. */
+/* Lote 035/137 â€” funÃ§Ãµes 3401 a 3500. */
 extern void __cdecl sub_0009FDDA(void);
 extern void __cdecl sub_0009FE1D(void);
 extern void __cdecl sub_0009FE60(void);
@@ -3724,7 +3938,7 @@ extern void __cdecl sub_000A3183(void);
 extern void __cdecl sub_000A31B5(void);
 extern void __cdecl sub_000A3230(void);
 extern void __cdecl sub_000A32DA(void);
-/* Lote 036/137 — funções 3501 a 3600. */
+/* Lote 036/137 â€” funÃ§Ãµes 3501 a 3600. */
 extern void __cdecl sub_000A3330(void);
 extern void __cdecl sub_000A3380(void);
 extern void __cdecl sub_000A33E8(void);
@@ -3825,7 +4039,7 @@ extern void __cdecl sub_000A5A92(void);
 extern void __cdecl sub_000A5AA4(void);
 extern void __cdecl sub_000A5AC9(void);
 extern void __cdecl sub_000A5AEE(void);
-/* Lote 037/137 — funções 3601 a 3700. */
+/* Lote 037/137 â€” funÃ§Ãµes 3601 a 3700. */
 extern void __cdecl sub_000A5B2B(void);
 extern void __cdecl sub_000A62F0(void);
 extern void __cdecl sub_000A6351(void);
@@ -3926,7 +4140,7 @@ extern void __cdecl sub_000A869F(void);
 extern void __cdecl sub_000A86A5(void);
 extern void __cdecl sub_000A8709(void);
 extern void __cdecl sub_000A8879(void);
-/* Lote 038/137 — funções 3701 a 3800. */
+/* Lote 038/137 â€” funÃ§Ãµes 3701 a 3800. */
 extern void __cdecl sub_000A887D(void);
 extern void __cdecl sub_000A8885(void);
 extern void __cdecl sub_000A88EC(void);
@@ -4027,7 +4241,7 @@ extern void __cdecl sub_000AAE52(void);
 extern void __cdecl sub_000AAE5A(void);
 extern void __cdecl sub_000AAE70(void);
 extern void __cdecl sub_000AAE76(void);
-/* Lote 039/137 — funções 3801 a 3900. */
+/* Lote 039/137 â€” funÃ§Ãµes 3801 a 3900. */
 extern void __cdecl sub_000AAEA1(void);
 extern void __cdecl sub_000AB078(void);
 extern void __cdecl sub_000AB0FC(void);
@@ -4128,7 +4342,7 @@ extern void __cdecl sub_000AD150(void);
 extern void __cdecl sub_000AD170(void);
 extern void __cdecl sub_000AD190(void);
 extern void __cdecl sub_000AD1B0(void);
-/* Lote 040/137 — funções 3901 a 4000. */
+/* Lote 040/137 â€” funÃ§Ãµes 3901 a 4000. */
 extern void __cdecl sub_000AD1D0(void);
 extern void __cdecl sub_000AD1F0(void);
 extern void __cdecl sub_000AD210(void);
@@ -4229,7 +4443,7 @@ extern void __cdecl sub_000B00C0(void);
 extern void __cdecl sub_000B0110(void);
 extern void __cdecl sub_000B01F0(void);
 extern void __cdecl sub_000B0200(void);
-/* Lote 041/137 — funções 4001 a 4100. */
+/* Lote 041/137 â€” funÃ§Ãµes 4001 a 4100. */
 extern void __cdecl sub_000B0260(void);
 extern void __cdecl sub_000B02C0(void);
 extern void __cdecl sub_000B0350(void);
@@ -4330,7 +4544,7 @@ extern void __cdecl sub_000B31D0(void);
 extern void __cdecl sub_000B31E0(void);
 extern void __cdecl sub_000B31F0(void);
 extern void __cdecl sub_000B3200(void);
-/* Lote 042/137 — funções 4101 a 4200. */
+/* Lote 042/137 â€” funÃ§Ãµes 4101 a 4200. */
 extern void __cdecl sub_000B3210(void);
 extern void __cdecl sub_000B3220(void);
 extern void __cdecl sub_000B3230(void);
@@ -4431,7 +4645,7 @@ extern void __cdecl sub_000B54E0(void);
 extern void __cdecl sub_000B54F0(void);
 extern void __cdecl sub_000B5500(void);
 extern void __cdecl sub_000B5510(void);
-/* Lote 043/137 — funções 4201 a 4300. */
+/* Lote 043/137 â€” funÃ§Ãµes 4201 a 4300. */
 extern void __cdecl sub_000B5520(void);
 extern void __cdecl sub_000B5530(void);
 extern void __cdecl sub_000B5560(void);
@@ -4532,7 +4746,7 @@ extern void __cdecl sub_000B8290(void);
 extern void __cdecl sub_000B82B0(void);
 extern void __cdecl sub_000B82C0(void);
 extern void __cdecl sub_000B82D0(void);
-/* Lote 044/137 — funções 4301 a 4400. */
+/* Lote 044/137 â€” funÃ§Ãµes 4301 a 4400. */
 extern void __cdecl sub_000B8340(void);
 extern void __cdecl sub_000B8380(void);
 extern void __cdecl sub_000B8390(void);
@@ -4633,7 +4847,7 @@ extern void __cdecl sub_000BA640(void);
 extern void __cdecl sub_000BA670(void);
 extern void __cdecl sub_000BA6B0(void);
 extern void __cdecl sub_000BA6F0(void);
-/* Lote 045/137 — funções 4401 a 4500. */
+/* Lote 045/137 â€” funÃ§Ãµes 4401 a 4500. */
 extern void __cdecl sub_000BA740(void);
 extern void __cdecl sub_000BA790(void);
 extern void __cdecl sub_000BA7C0(void);
@@ -4734,7 +4948,7 @@ extern void __cdecl sub_000BE4D0(void);
 extern void __cdecl sub_000BE510(void);
 extern void __cdecl sub_000BE550(void);
 extern void __cdecl sub_000BE560(void);
-/* Lote 046/137 — funções 4501 a 4600. */
+/* Lote 046/137 â€” funÃ§Ãµes 4501 a 4600. */
 extern void __cdecl sub_000BE5A0(void);
 extern void __cdecl sub_000BE5B0(void);
 extern void __cdecl sub_000BE5C0(void);
@@ -4835,7 +5049,7 @@ extern void __cdecl sub_000BF710(void);
 extern void __cdecl sub_000BF7E0(void);
 extern void __cdecl sub_000BF820(void);
 extern void __cdecl sub_000BF830(void);
-/* Lote 047/137 — funções 4601 a 4700. */
+/* Lote 047/137 â€” funÃ§Ãµes 4601 a 4700. */
 extern void __cdecl sub_000BF860(void);
 extern void __cdecl sub_000BF870(void);
 extern void __cdecl sub_000BF880(void);
@@ -4936,7 +5150,7 @@ extern void __cdecl sub_000C0F00(void);
 extern void __cdecl sub_000C0F10(void);
 extern void __cdecl sub_000C0F20(void);
 extern void __cdecl sub_000C0F40(void);
-/* Lote 048/137 — funções 4701 a 4800. */
+/* Lote 048/137 â€” funÃ§Ãµes 4701 a 4800. */
 extern void __cdecl sub_000C0F60(void);
 extern void __cdecl sub_000C0F70(void);
 extern void __cdecl sub_000C0F80(void);
@@ -5037,7 +5251,7 @@ extern void __cdecl sub_000C2610(void);
 extern void __cdecl sub_000C2670(void);
 extern void __cdecl sub_000C2690(void);
 extern void __cdecl sub_000C26A0(void);
-/* Lote 049/137 — funções 4801 a 4900. */
+/* Lote 049/137 â€” funÃ§Ãµes 4801 a 4900. */
 extern void __cdecl sub_000C26B0(void);
 extern void __cdecl sub_000C26D0(void);
 extern void __cdecl sub_000C26F0(void);
@@ -5138,7 +5352,7 @@ extern void __cdecl sub_000C4EC0(void);
 extern void __cdecl sub_000C4F30(void);
 extern void __cdecl sub_000C5100(void);
 extern void __cdecl sub_000C5310(void);
-/* Lote 050/137 — funções 4901 a 5000. */
+/* Lote 050/137 â€” funÃ§Ãµes 4901 a 5000. */
 extern void __cdecl sub_000C5440(void);
 extern void __cdecl sub_000C5500(void);
 extern void __cdecl sub_000C55B0(void);
@@ -5239,7 +5453,7 @@ extern void __cdecl sub_000CC3F0(void);
 extern void __cdecl sub_000CC440(void);
 extern void __cdecl sub_000CC460(void);
 extern void __cdecl sub_000CC480(void);
-/* Lote 051/137 — funções 5001 a 5100. */
+/* Lote 051/137 â€” funÃ§Ãµes 5001 a 5100. */
 extern void __cdecl sub_000CC4E0(void);
 extern void __cdecl sub_000CC530(void);
 extern void __cdecl sub_000CC570(void);
@@ -5340,7 +5554,7 @@ extern void __cdecl sub_000D4A20(void);
 extern void __cdecl sub_000D4A50(void);
 extern void __cdecl sub_000D4B20(void);
 extern void __cdecl sub_000D4B50(void);
-/* Lote 052/137 — funções 5101 a 5200. */
+/* Lote 052/137 â€” funÃ§Ãµes 5101 a 5200. */
 extern void __cdecl sub_000D4C20(void);
 extern void __cdecl sub_000D4C50(void);
 extern void __cdecl sub_000D4CB0(void);
@@ -5441,7 +5655,7 @@ extern void __cdecl sub_000DB530(void);
 extern void __cdecl sub_000DB540(void);
 extern void __cdecl sub_000DB550(void);
 extern void __cdecl sub_000DB570(void);
-/* Lote 053/137 — funções 5201 a 5300. */
+/* Lote 053/137 â€” funÃ§Ãµes 5201 a 5300. */
 extern void __cdecl sub_000DB580(void);
 extern void __cdecl sub_000DB5B0(void);
 extern void __cdecl sub_000DB610(void);
@@ -5542,7 +5756,7 @@ extern void __cdecl sub_000E1B30(void);
 extern void __cdecl sub_000E1B70(void);
 extern void __cdecl sub_000E1B80(void);
 extern void __cdecl sub_000E1B90(void);
-/* Lote 054/137 — funções 5301 a 5400. */
+/* Lote 054/137 â€” funÃ§Ãµes 5301 a 5400. */
 extern void __cdecl sub_000E1BA0(void);
 extern void __cdecl sub_000E1BB0(void);
 extern void __cdecl sub_000E1BC0(void);
@@ -5643,7 +5857,7 @@ extern void __cdecl sub_000E33D0(void);
 extern void __cdecl sub_000E33E0(void);
 extern void __cdecl sub_000E33F0(void);
 extern void __cdecl sub_000E3400(void);
-/* Lote 055/137 — funções 5401 a 5500. */
+/* Lote 055/137 â€” funÃ§Ãµes 5401 a 5500. */
 extern void __cdecl sub_000E3410(void);
 extern void __cdecl sub_000E3420(void);
 extern void __cdecl sub_000E3430(void);
@@ -5744,7 +5958,7 @@ extern void __cdecl sub_000E5260(void);
 extern void __cdecl sub_000E5280(void);
 extern void __cdecl sub_000E52A0(void);
 extern void __cdecl sub_000E52C0(void);
-/* Lote 056/137 — funções 5501 a 5600. */
+/* Lote 056/137 â€” funÃ§Ãµes 5501 a 5600. */
 extern void __cdecl sub_000E52E0(void);
 extern void __cdecl sub_000E5300(void);
 extern void __cdecl sub_000E5350(void);
@@ -5845,7 +6059,7 @@ extern void __cdecl sub_000E8090(void);
 extern void __cdecl sub_000E81A0(void);
 extern void __cdecl sub_000E81C0(void);
 extern void __cdecl sub_000E82F0(void);
-/* Lote 057/137 — funções 5601 a 5700. */
+/* Lote 057/137 â€” funÃ§Ãµes 5601 a 5700. */
 extern void __cdecl sub_000E8350(void);
 extern void __cdecl sub_000E8370(void);
 extern void __cdecl sub_000E83E0(void);
@@ -5946,7 +6160,7 @@ extern void __cdecl sub_000F21A0(void);
 extern void __cdecl sub_000F2230(void);
 extern void __cdecl sub_000F2260(void);
 extern void __cdecl sub_000F23B0(void);
-/* Lote 058/137 — funções 5701 a 5800. */
+/* Lote 058/137 â€” funÃ§Ãµes 5701 a 5800. */
 extern void __cdecl sub_000F2620(void);
 extern void __cdecl sub_000F26C0(void);
 extern void __cdecl sub_000F2740(void);
@@ -6047,7 +6261,7 @@ extern void __cdecl sub_000F91C0(void);
 extern void __cdecl sub_000F91E0(void);
 extern void __cdecl sub_000F9200(void);
 extern void __cdecl sub_000F9220(void);
-/* Lote 059/137 — funções 5801 a 5900. */
+/* Lote 059/137 â€” funÃ§Ãµes 5801 a 5900. */
 extern void __cdecl sub_000F9250(void);
 extern void __cdecl sub_000F9270(void);
 extern void __cdecl sub_000F92A0(void);
@@ -6148,7 +6362,7 @@ extern void __cdecl sub_00103900(void);
 extern void __cdecl sub_00103A00(void);
 extern void __cdecl sub_00103AD0(void);
 extern void __cdecl sub_00103D50(void);
-/* Lote 060/137 — funções 5901 a 6000. */
+/* Lote 060/137 â€” funÃ§Ãµes 5901 a 6000. */
 extern void __cdecl sub_00103F00(void);
 extern void __cdecl sub_00103F70(void);
 extern void __cdecl sub_00103FE0(void);
@@ -6249,7 +6463,7 @@ extern void __cdecl sub_0010D8D0(void);
 extern void __cdecl sub_0010DAD0(void);
 extern void __cdecl sub_0010DE20(void);
 extern void __cdecl sub_0010DF30(void);
-/* Lote 061/137 — funções 6001 a 6100. */
+/* Lote 061/137 â€” funÃ§Ãµes 6001 a 6100. */
 extern void __cdecl sub_0010DF60(void);
 extern void __cdecl sub_0010DF90(void);
 extern void __cdecl sub_0010E050(void);
@@ -6350,7 +6564,7 @@ extern void __cdecl sub_00112CF0(void);
 extern void __cdecl sub_00112D00(void);
 extern void __cdecl sub_00112D70(void);
 extern void __cdecl sub_00112DA0(void);
-/* Lote 062/137 — funções 6101 a 6200. */
+/* Lote 062/137 â€” funÃ§Ãµes 6101 a 6200. */
 extern void __cdecl sub_00112DB0(void);
 extern void __cdecl sub_00112DC0(void);
 extern void __cdecl sub_00112DD0(void);
@@ -6451,7 +6665,7 @@ extern void __cdecl sub_00114E00(void);
 extern void __cdecl sub_00114ED0(void);
 extern void __cdecl sub_00114F60(void);
 extern void __cdecl sub_00114FA0(void);
-/* Lote 063/137 — funções 6201 a 6300. */
+/* Lote 063/137 â€” funÃ§Ãµes 6201 a 6300. */
 extern void __cdecl sub_00115030(void);
 extern void __cdecl sub_00115140(void);
 extern void __cdecl sub_001152D0(void);
@@ -6552,7 +6766,7 @@ extern void __cdecl sub_0011BC40(void);
 extern void __cdecl sub_0011BEB0(void);
 extern void __cdecl sub_0011C0A0(void);
 extern void __cdecl sub_0011C3C0(void);
-/* Lote 064/137 — funções 6301 a 6400. */
+/* Lote 064/137 â€” funÃ§Ãµes 6301 a 6400. */
 extern void __cdecl sub_0011C480(void);
 extern void __cdecl sub_0011CD20(void);
 extern void __cdecl sub_0011D270(void);
@@ -6653,7 +6867,7 @@ extern void __cdecl sub_00125740(void);
 extern void __cdecl sub_00125750(void);
 extern void __cdecl sub_00125770(void);
 extern void __cdecl sub_00125780(void);
-/* Lote 065/137 — funções 6401 a 6500. */
+/* Lote 065/137 â€” funÃ§Ãµes 6401 a 6500. */
 extern void __cdecl sub_001257A0(void);
 extern void __cdecl sub_001257B0(void);
 extern void __cdecl sub_001257D0(void);
@@ -6754,7 +6968,7 @@ extern void __cdecl sub_0012A6A0(void);
 extern void __cdecl sub_0012A6B0(void);
 extern void __cdecl sub_0012A7B0(void);
 extern void __cdecl sub_0012A7C0(void);
-/* Lote 066/137 — funções 6501 a 6600. */
+/* Lote 066/137 â€” funÃ§Ãµes 6501 a 6600. */
 extern void __cdecl sub_0012A7D0(void);
 extern void __cdecl sub_0012A7F0(void);
 extern void __cdecl sub_0012A820(void);
@@ -6855,7 +7069,7 @@ extern void __cdecl sub_0012C330(void);
 extern void __cdecl sub_0012C3A0(void);
 extern void __cdecl sub_0012C400(void);
 extern void __cdecl sub_0012C420(void);
-/* Lote 067/137 — funções 6601 a 6700. */
+/* Lote 067/137 â€” funÃ§Ãµes 6601 a 6700. */
 extern void __cdecl sub_0012C440(void);
 extern void __cdecl sub_0012C470(void);
 extern void __cdecl sub_0012C4A0(void);
@@ -6956,7 +7170,7 @@ extern void __cdecl sub_00134A90(void);
 extern void __cdecl sub_00134BF0(void);
 extern void __cdecl sub_00134CE0(void);
 extern void __cdecl sub_001350A0(void);
-/* Lote 068/137 — funções 6701 a 6800. */
+/* Lote 068/137 â€” funÃ§Ãµes 6701 a 6800. */
 extern void __cdecl sub_00135370(void);
 extern void __cdecl sub_001355B0(void);
 extern void __cdecl sub_00135720(void);
@@ -7057,7 +7271,7 @@ extern void __cdecl sub_0013CBF0(void);
 extern void __cdecl sub_0013CC00(void);
 extern void __cdecl sub_0013CC20(void);
 extern void __cdecl sub_0013CC30(void);
-/* Lote 069/137 — funções 6801 a 6900. */
+/* Lote 069/137 â€” funÃ§Ãµes 6801 a 6900. */
 extern void __cdecl sub_0013CC80(void);
 extern void __cdecl sub_0013CCA0(void);
 extern void __cdecl sub_0013CCB0(void);
@@ -7158,7 +7372,7 @@ extern void __cdecl sub_0013DF10(void);
 extern void __cdecl sub_0013DF20(void);
 extern void __cdecl sub_0013DF50(void);
 extern void __cdecl sub_0013DF70(void);
-/* Lote 070/137 — funções 6901 a 7000. */
+/* Lote 070/137 â€” funÃ§Ãµes 6901 a 7000. */
 extern void __cdecl sub_0013DF80(void);
 extern void __cdecl sub_0013DF90(void);
 extern void __cdecl sub_0013DFB0(void);
@@ -7259,7 +7473,7 @@ extern void __cdecl sub_0013FEF0(void);
 extern void __cdecl sub_0013FF80(void);
 extern void __cdecl sub_00140010(void);
 extern void __cdecl sub_00140020(void);
-/* Lote 071/137 — funções 7001 a 7100. */
+/* Lote 071/137 â€” funÃ§Ãµes 7001 a 7100. */
 extern void __cdecl sub_00140060(void);
 extern void __cdecl sub_00140150(void);
 extern void __cdecl sub_001401C0(void);
@@ -7360,7 +7574,7 @@ extern void __cdecl sub_00143990(void);
 extern void __cdecl sub_00143B40(void);
 extern void __cdecl sub_00143D80(void);
 extern void __cdecl sub_00143FD0(void);
-/* Lote 072/137 — funções 7101 a 7200. */
+/* Lote 072/137 â€” funÃ§Ãµes 7101 a 7200. */
 extern void __cdecl sub_00144080(void);
 extern void __cdecl sub_00144140(void);
 extern void __cdecl sub_00144160(void);
@@ -7461,7 +7675,7 @@ extern void __cdecl sub_0014ACB0(void);
 extern void __cdecl sub_0014ADC0(void);
 extern void __cdecl sub_0014AE60(void);
 extern void __cdecl sub_0014B080(void);
-/* Lote 073/137 — funções 7201 a 7300. */
+/* Lote 073/137 â€” funÃ§Ãµes 7201 a 7300. */
 extern void __cdecl sub_0014B0C0(void);
 extern void __cdecl sub_0014B120(void);
 extern void __cdecl sub_0014B4F0(void);
@@ -7562,7 +7776,7 @@ extern void __cdecl sub_00152180(void);
 extern void __cdecl sub_00152840(void);
 extern void __cdecl sub_00152BF0(void);
 extern void __cdecl sub_00152D10(void);
-/* Lote 074/137 — funções 7301 a 7400. */
+/* Lote 074/137 â€” funÃ§Ãµes 7301 a 7400. */
 extern void __cdecl sub_001530B0(void);
 extern void __cdecl sub_00153210(void);
 extern void __cdecl sub_00153260(void);
@@ -7663,7 +7877,7 @@ extern void __cdecl sub_00156EE0(void);
 extern void __cdecl sub_00156EF0(void);
 extern void __cdecl sub_00156F00(void);
 extern void __cdecl sub_00156F10(void);
-/* Lote 075/137 — funções 7401 a 7500. */
+/* Lote 075/137 â€” funÃ§Ãµes 7401 a 7500. */
 extern void __cdecl sub_00156F50(void);
 extern void __cdecl sub_00156F70(void);
 extern void __cdecl sub_00156F80(void);
@@ -7764,7 +7978,7 @@ extern void __cdecl sub_00157AB0(void);
 extern void __cdecl sub_00157AD0(void);
 extern void __cdecl sub_00157AF0(void);
 extern void __cdecl sub_00157B00(void);
-/* Lote 076/137 — funções 7501 a 7600. */
+/* Lote 076/137 â€” funÃ§Ãµes 7501 a 7600. */
 extern void __cdecl sub_00157B10(void);
 extern void __cdecl sub_00157B20(void);
 extern void __cdecl sub_00157B30(void);
@@ -7865,7 +8079,7 @@ extern void __cdecl sub_001597D0(void);
 extern void __cdecl sub_001597E0(void);
 extern void __cdecl sub_00159870(void);
 extern void __cdecl sub_00159880(void);
-/* Lote 077/137 — funções 7601 a 7700. */
+/* Lote 077/137 â€” funÃ§Ãµes 7601 a 7700. */
 extern void __cdecl sub_001598B0(void);
 extern void __cdecl sub_00159910(void);
 extern void __cdecl sub_001599E0(void);
@@ -7966,7 +8180,7 @@ extern void __cdecl sub_0015F230(void);
 extern void __cdecl sub_0015F260(void);
 extern void __cdecl sub_0015F2E0(void);
 extern void __cdecl sub_0015F360(void);
-/* Lote 078/137 — funções 7701 a 7800. */
+/* Lote 078/137 â€” funÃ§Ãµes 7701 a 7800. */
 extern void __cdecl sub_0015F370(void);
 extern void __cdecl sub_0015F3E0(void);
 extern void __cdecl sub_0015F430(void);
@@ -8067,7 +8281,7 @@ extern void __cdecl sub_00164FD0(void);
 extern void __cdecl sub_001650E0(void);
 extern void __cdecl sub_00165300(void);
 extern void __cdecl sub_00165450(void);
-/* Lote 079/137 — funções 7801 a 7900. */
+/* Lote 079/137 â€” funÃ§Ãµes 7801 a 7900. */
 extern void __cdecl sub_00165890(void);
 extern void __cdecl sub_00165AD0(void);
 extern void __cdecl sub_00165C00(void);
@@ -8168,7 +8382,7 @@ extern void __cdecl sub_00171550(void);
 extern void __cdecl sub_001715F0(void);
 extern void __cdecl sub_00171670(void);
 extern void __cdecl sub_001716F0(void);
-/* Lote 080/137 — funções 7901 a 8000. */
+/* Lote 080/137 â€” funÃ§Ãµes 7901 a 8000. */
 extern void __cdecl sub_001718B0(void);
 extern void __cdecl sub_00171920(void);
 extern void __cdecl sub_00171990(void);
@@ -8269,7 +8483,7 @@ extern void __cdecl sub_00179DE0(void);
 extern void __cdecl sub_00179E20(void);
 extern void __cdecl sub_00179E80(void);
 extern void __cdecl sub_00179EF0(void);
-/* Lote 081/137 — funções 8001 a 8100. */
+/* Lote 081/137 â€” funÃ§Ãµes 8001 a 8100. */
 extern void __cdecl sub_00179F20(void);
 extern void __cdecl sub_00179F70(void);
 extern void __cdecl sub_00179FD0(void);
@@ -8370,7 +8584,7 @@ extern void __cdecl sub_0017D520(void);
 extern void __cdecl sub_0017D570(void);
 extern void __cdecl sub_0017D610(void);
 extern void __cdecl sub_0017D6B0(void);
-/* Lote 082/137 — funções 8101 a 8200. */
+/* Lote 082/137 â€” funÃ§Ãµes 8101 a 8200. */
 extern void __cdecl sub_0017D740(void);
 extern void __cdecl sub_0017D910(void);
 extern void __cdecl sub_0017DA10(void);
@@ -8471,7 +8685,7 @@ extern void __cdecl sub_00181220(void);
 extern void __cdecl sub_00181250(void);
 extern void __cdecl sub_00181270(void);
 extern void __cdecl sub_001812C0(void);
-/* Lote 083/137 — funções 8201 a 8300. */
+/* Lote 083/137 â€” funÃ§Ãµes 8201 a 8300. */
 extern void __cdecl sub_0018132E(void);
 extern void __cdecl sub_00181336(void);
 extern void __cdecl sub_00181340(void);
@@ -8572,7 +8786,7 @@ extern void __cdecl sub_001821C0(void);
 extern void __cdecl sub_001821E0(void);
 extern void __cdecl sub_00182220(void);
 extern void __cdecl sub_00182230(void);
-/* Lote 084/137 — funções 8301 a 8400. */
+/* Lote 084/137 â€” funÃ§Ãµes 8301 a 8400. */
 extern void __cdecl sub_00182240(void);
 extern void __cdecl sub_00182260(void);
 extern void __cdecl sub_001822A0(void);
@@ -8673,7 +8887,7 @@ extern void __cdecl sub_00183150(void);
 extern void __cdecl sub_00183170(void);
 extern void __cdecl sub_001831B0(void);
 extern void __cdecl sub_001831C0(void);
-/* Lote 085/137 — funções 8401 a 8500. */
+/* Lote 085/137 â€” funÃ§Ãµes 8401 a 8500. */
 extern void __cdecl sub_001831D0(void);
 extern void __cdecl sub_001831E0(void);
 extern void __cdecl sub_001831F0(void);
@@ -8774,7 +8988,7 @@ extern void __cdecl sub_00183D20(void);
 extern void __cdecl sub_00183D30(void);
 extern void __cdecl sub_00183D40(void);
 extern void __cdecl sub_00183D50(void);
-/* Lote 086/137 — funções 8501 a 8600. */
+/* Lote 086/137 â€” funÃ§Ãµes 8501 a 8600. */
 extern void __cdecl sub_00183D60(void);
 extern void __cdecl sub_00183D70(void);
 extern void __cdecl sub_00183D80(void);
@@ -8875,7 +9089,7 @@ extern void __cdecl sub_00184790(void);
 extern void __cdecl sub_001847A0(void);
 extern void __cdecl sub_001847C0(void);
 extern void __cdecl sub_001847D0(void);
-/* Lote 087/137 — funções 8601 a 8700. */
+/* Lote 087/137 â€” funÃ§Ãµes 8601 a 8700. */
 extern void __cdecl sub_001847E0(void);
 extern void __cdecl sub_001847F0(void);
 extern void __cdecl sub_00184800(void);
@@ -8976,7 +9190,7 @@ extern void __cdecl sub_001858D0(void);
 extern void __cdecl sub_001858F0(void);
 extern void __cdecl sub_00185940(void);
 extern void __cdecl sub_001859E0(void);
-/* Lote 088/137 — funções 8701 a 8800. */
+/* Lote 088/137 â€” funÃ§Ãµes 8701 a 8800. */
 extern void __cdecl sub_00185AE0(void);
 extern void __cdecl sub_00185B70(void);
 extern void __cdecl sub_00185BB0(void);
@@ -9077,7 +9291,7 @@ extern void __cdecl sub_00187B10(void);
 extern void __cdecl sub_00187B20(void);
 extern void __cdecl sub_00187B60(void);
 extern void __cdecl sub_00187B80(void);
-/* Lote 089/137 — funções 8801 a 8900. */
+/* Lote 089/137 â€” funÃ§Ãµes 8801 a 8900. */
 extern void __cdecl sub_00187B90(void);
 extern void __cdecl sub_00187BA0(void);
 extern void __cdecl sub_00187BE0(void);
@@ -9178,7 +9392,7 @@ extern void __cdecl sub_001896A0(void);
 extern void __cdecl sub_001896E0(void);
 extern void __cdecl sub_00189770(void);
 extern void __cdecl sub_001897C0(void);
-/* Lote 090/137 — funções 8901 a 9000. */
+/* Lote 090/137 â€” funÃ§Ãµes 8901 a 9000. */
 extern void __cdecl sub_001897F0(void);
 extern void __cdecl sub_00189840(void);
 extern void __cdecl sub_00189850(void);
@@ -9279,7 +9493,7 @@ extern void __cdecl sub_0018BB10(void);
 extern void __cdecl sub_0018BB50(void);
 extern void __cdecl sub_0018BBB0(void);
 extern void __cdecl sub_0018BBF0(void);
-/* Lote 091/137 — funções 9001 a 9100. */
+/* Lote 091/137 â€” funÃ§Ãµes 9001 a 9100. */
 extern void __cdecl sub_0018BC30(void);
 extern void __cdecl sub_0018BC70(void);
 extern void __cdecl sub_0018BCB0(void);
@@ -9380,7 +9594,7 @@ extern void __cdecl sub_0018F170(void);
 extern void __cdecl sub_0018F260(void);
 extern void __cdecl sub_0018F2E0(void);
 extern void __cdecl sub_0018F310(void);
-/* Lote 092/137 — funções 9101 a 9200. */
+/* Lote 092/137 â€” funÃ§Ãµes 9101 a 9200. */
 extern void __cdecl sub_0018F330(void);
 extern void __cdecl sub_0018F3A0(void);
 extern void __cdecl sub_0018F460(void);
@@ -9481,7 +9695,7 @@ extern void __cdecl sub_00192DD0(void);
 extern void __cdecl sub_00192E50(void);
 extern void __cdecl sub_00192EF0(void);
 extern void __cdecl sub_00192F40(void);
-/* Lote 093/137 — funções 9201 a 9300. */
+/* Lote 093/137 â€” funÃ§Ãµes 9201 a 9300. */
 extern void __cdecl sub_00192F70(void);
 extern void __cdecl sub_00192F90(void);
 extern void __cdecl sub_00192FD0(void);
@@ -9582,7 +9796,7 @@ extern void __cdecl sub_001982D0(void);
 extern void __cdecl sub_00198480(void);
 extern void __cdecl sub_001984C0(void);
 extern void __cdecl sub_00198640(void);
-/* Lote 094/137 — funções 9301 a 9400. */
+/* Lote 094/137 â€” funÃ§Ãµes 9301 a 9400. */
 extern void __cdecl sub_00198690(void);
 extern void __cdecl sub_00198810(void);
 extern void __cdecl sub_00198840(void);
@@ -9683,7 +9897,7 @@ extern void __cdecl sub_0019D870(void);
 extern void __cdecl sub_0019D910(void);
 extern void __cdecl sub_0019D990(void);
 extern void __cdecl sub_0019DA30(void);
-/* Lote 095/137 — funções 9401 a 9500. */
+/* Lote 095/137 â€” funÃ§Ãµes 9401 a 9500. */
 extern void __cdecl sub_0019DA90(void);
 extern void __cdecl sub_0019DAD0(void);
 extern void __cdecl sub_0019DB00(void);
@@ -9784,7 +9998,7 @@ extern void __cdecl sub_001A33E0(void);
 extern void __cdecl sub_001A3540(void);
 extern void __cdecl sub_001A3600(void);
 extern void __cdecl sub_001A3800(void);
-/* Lote 096/137 — funções 9501 a 9600. */
+/* Lote 096/137 â€” funÃ§Ãµes 9501 a 9600. */
 extern void __cdecl sub_001A38D0(void);
 extern void __cdecl sub_001A3A40(void);
 extern void __cdecl sub_001A3B40(void);
@@ -9885,7 +10099,7 @@ extern void __cdecl sub_001A9360(void);
 extern void __cdecl sub_001A9400(void);
 extern void __cdecl sub_001A94B0(void);
 extern void __cdecl sub_001A9540(void);
-/* Lote 097/137 — funções 9601 a 9700. */
+/* Lote 097/137 â€” funÃ§Ãµes 9601 a 9700. */
 extern void __cdecl sub_001A9610(void);
 extern void __cdecl sub_001A9660(void);
 extern void __cdecl sub_001A96A0(void);
@@ -9986,7 +10200,7 @@ extern void __cdecl sub_001AF3A0(void);
 extern void __cdecl sub_001AF3C0(void);
 extern void __cdecl sub_001AF430(void);
 extern void __cdecl sub_001AF4E0(void);
-/* Lote 098/137 — funções 9701 a 9800. */
+/* Lote 098/137 â€” funÃ§Ãµes 9701 a 9800. */
 extern void __cdecl sub_001AF580(void);
 extern void __cdecl sub_001AF650(void);
 extern void __cdecl sub_001AF6C0(void);
@@ -10087,7 +10301,7 @@ extern void __cdecl sub_001B41A0(void);
 extern void __cdecl sub_001B41D0(void);
 extern void __cdecl sub_001B4200(void);
 extern void __cdecl sub_001B4230(void);
-/* Lote 099/137 — funções 9801 a 9900. */
+/* Lote 099/137 â€” funÃ§Ãµes 9801 a 9900. */
 extern void __cdecl sub_001B4250(void);
 extern void __cdecl sub_001B42A0(void);
 extern void __cdecl sub_001B42C0(void);
@@ -10188,7 +10402,7 @@ extern void __cdecl sub_001B5530(void);
 extern void __cdecl sub_001B5540(void);
 extern void __cdecl sub_001B5570(void);
 extern void __cdecl sub_001B5593(void);
-/* Lote 100/137 — funções 9901 a 10000. */
+/* Lote 100/137 â€” funÃ§Ãµes 9901 a 10000. */
 extern void __cdecl sub_001B55A0(void);
 extern void __cdecl sub_001B55B0(void);
 extern void __cdecl sub_001B55C0(void);
@@ -10289,7 +10503,7 @@ extern void __cdecl sub_001B6270(void);
 extern void __cdecl sub_001B6280(void);
 extern void __cdecl sub_001B6290(void);
 extern void __cdecl sub_001B62C0(void);
-/* Lote 101/137 — funções 10001 a 10100. */
+/* Lote 101/137 â€” funÃ§Ãµes 10001 a 10100. */
 extern void __cdecl sub_001B62D0(void);
 extern void __cdecl sub_001B62E0(void);
 extern void __cdecl sub_001B6300(void);
@@ -10390,7 +10604,7 @@ extern void __cdecl sub_001B7060(void);
 extern void __cdecl sub_001B70A0(void);
 extern void __cdecl sub_001B70E0(void);
 extern void __cdecl sub_001B7120(void);
-/* Lote 102/137 — funções 10101 a 10200. */
+/* Lote 102/137 â€” funÃ§Ãµes 10101 a 10200. */
 extern void __cdecl sub_001B7160(void);
 extern void __cdecl sub_001B7170(void);
 extern void __cdecl sub_001B7180(void);
@@ -10491,7 +10705,7 @@ extern void __cdecl sub_001B8F60(void);
 extern void __cdecl sub_001B8F80(void);
 extern void __cdecl sub_001B9000(void);
 extern void __cdecl sub_001B9020(void);
-/* Lote 103/137 — funções 10201 a 10300. */
+/* Lote 103/137 â€” funÃ§Ãµes 10201 a 10300. */
 extern void __cdecl sub_001B9130(void);
 extern void __cdecl sub_001B92B0(void);
 extern void __cdecl sub_001B92F0(void);
@@ -10592,7 +10806,7 @@ extern void __cdecl sub_001BAB10(void);
 extern void __cdecl sub_001BAB60(void);
 extern void __cdecl sub_001BABA0(void);
 extern void __cdecl sub_001BAC00(void);
-/* Lote 104/137 — funções 10301 a 10400. */
+/* Lote 104/137 â€” funÃ§Ãµes 10301 a 10400. */
 extern void __cdecl sub_001BAE70(void);
 extern void __cdecl sub_001BAF30(void);
 extern void __cdecl sub_001BAF70(void);
@@ -10693,7 +10907,7 @@ extern void __cdecl sub_001BD830(void);
 extern void __cdecl sub_001BD840(void);
 extern void __cdecl sub_001BD860(void);
 extern void __cdecl sub_001BD9F0(void);
-/* Lote 105/137 — funções 10401 a 10500. */
+/* Lote 105/137 â€” funÃ§Ãµes 10401 a 10500. */
 extern void __cdecl sub_001BDA20(void);
 extern void __cdecl sub_001BDA70(void);
 extern void __cdecl sub_001BDB00(void);
@@ -10794,7 +11008,7 @@ extern void __cdecl sub_001C1AF0(void);
 extern void __cdecl sub_001C1C00(void);
 extern void __cdecl sub_001C1C50(void);
 extern void __cdecl sub_001C1C80(void);
-/* Lote 106/137 — funções 10501 a 10600. */
+/* Lote 106/137 â€” funÃ§Ãµes 10501 a 10600. */
 extern void __cdecl sub_001C1CA0(void);
 extern void __cdecl sub_001C1CF0(void);
 extern void __cdecl sub_001C1D10(void);
@@ -10895,7 +11109,7 @@ extern void __cdecl sub_001C5A50(void);
 extern void __cdecl sub_001C5B40(void);
 extern void __cdecl sub_001C5C60(void);
 extern void __cdecl sub_001C5CD0(void);
-/* Lote 107/137 — funções 10601 a 10700. */
+/* Lote 107/137 â€” funÃ§Ãµes 10601 a 10700. */
 extern void __cdecl sub_001C5DA0(void);
 extern void __cdecl sub_001C5DC0(void);
 extern void __cdecl sub_001C5EE0(void);
@@ -10996,7 +11210,7 @@ extern void __cdecl sub_001CBA10(void);
 extern void __cdecl sub_001CBAC0(void);
 extern void __cdecl sub_001CBC60(void);
 extern void __cdecl sub_001CBDB0(void);
-/* Lote 108/137 — funções 10701 a 10800. */
+/* Lote 108/137 â€” funÃ§Ãµes 10701 a 10800. */
 extern void __cdecl sub_001CBF00(void);
 extern void __cdecl sub_001CBF40(void);
 extern void __cdecl sub_001CC060(void);
@@ -11097,7 +11311,7 @@ extern void __cdecl sub_001D1DE0(void);
 extern void __cdecl sub_001D1E40(void);
 extern void __cdecl sub_001D2020(void);
 extern void __cdecl sub_001D20C0(void);
-/* Lote 109/137 — funções 10801 a 10900. */
+/* Lote 109/137 â€” funÃ§Ãµes 10801 a 10900. */
 extern void __cdecl sub_001D2120(void);
 extern void __cdecl sub_001D21B0(void);
 extern void __cdecl sub_001D21F0(void);
@@ -11198,7 +11412,7 @@ extern void __cdecl sub_001DAAC0(void);
 extern void __cdecl sub_001DAF10(void);
 extern void __cdecl sub_001DAFF0(void);
 extern void __cdecl sub_001DB230(void);
-/* Lote 110/137 — funções 10901 a 11000. */
+/* Lote 110/137 â€” funÃ§Ãµes 10901 a 11000. */
 extern void __cdecl sub_001DB310(void);
 extern void __cdecl sub_001DB3C0(void);
 extern void __cdecl sub_001DB470(void);
@@ -11299,7 +11513,7 @@ extern void __cdecl sub_001E4B80(void);
 extern void __cdecl sub_001E4DD0(void);
 extern void __cdecl sub_001E4E70(void);
 extern void __cdecl sub_001E4FB0(void);
-/* Lote 111/137 — funções 11001 a 11100. */
+/* Lote 111/137 â€” funÃ§Ãµes 11001 a 11100. */
 extern void __cdecl sub_001E5070(void);
 extern void __cdecl sub_001E5410(void);
 extern void __cdecl sub_001E5710(void);
@@ -11400,7 +11614,7 @@ extern void __cdecl sub_001F1650(void);
 extern void __cdecl sub_001F1680(void);
 extern void __cdecl sub_001F16B0(void);
 extern void __cdecl sub_001F16E0(void);
-/* Lote 112/137 — funções 11101 a 11200. */
+/* Lote 112/137 â€” funÃ§Ãµes 11101 a 11200. */
 extern void __cdecl sub_001F1710(void);
 extern void __cdecl sub_001F1740(void);
 extern void __cdecl sub_001F1770(void);
@@ -11501,7 +11715,7 @@ extern void __cdecl sub_001F2290(void);
 extern void __cdecl sub_001F22A0(void);
 extern void __cdecl sub_001F22B0(void);
 extern void __cdecl sub_001F22C0(void);
-/* Lote 113/137 — funções 11201 a 11300. */
+/* Lote 113/137 â€” funÃ§Ãµes 11201 a 11300. */
 extern void __cdecl sub_001F2310(void);
 extern void __cdecl sub_001F2320(void);
 extern void __cdecl sub_001F2340(void);
@@ -11602,7 +11816,7 @@ extern void __cdecl sub_001F2D40(void);
 extern void __cdecl sub_001F2D60(void);
 extern void __cdecl sub_001F2D70(void);
 extern void __cdecl sub_001F2D80(void);
-/* Lote 114/137 — funções 11301 a 11400. */
+/* Lote 114/137 â€” funÃ§Ãµes 11301 a 11400. */
 extern void __cdecl sub_001F2D90(void);
 extern void __cdecl sub_001F2DA0(void);
 extern void __cdecl sub_001F2DB0(void);
@@ -11703,7 +11917,7 @@ extern void __cdecl sub_001F4030(void);
 extern void __cdecl sub_001F4050(void);
 extern void __cdecl sub_001F4070(void);
 extern void __cdecl sub_001F4090(void);
-/* Lote 115/137 — funções 11401 a 11500. */
+/* Lote 115/137 â€” funÃ§Ãµes 11401 a 11500. */
 extern void __cdecl sub_001F40A0(void);
 extern void __cdecl sub_001F40F0(void);
 extern void __cdecl sub_001F4110(void);
@@ -11804,7 +12018,7 @@ extern void __cdecl sub_001F5AD0(void);
 extern void __cdecl sub_001F5AE0(void);
 extern void __cdecl sub_001F5AF0(void);
 extern void __cdecl sub_001F5B00(void);
-/* Lote 116/137 — funções 11501 a 11600. */
+/* Lote 116/137 â€” funÃ§Ãµes 11501 a 11600. */
 extern void __cdecl sub_001F5B20(void);
 extern void __cdecl sub_001F5B40(void);
 extern void __cdecl sub_001F5B90(void);
@@ -11905,7 +12119,7 @@ extern void __cdecl sub_001F8490(void);
 extern void __cdecl sub_001F84B0(void);
 extern void __cdecl sub_001F84C0(void);
 extern void __cdecl sub_001F84D0(void);
-/* Lote 117/137 — funções 11601 a 11700. */
+/* Lote 117/137 â€” funÃ§Ãµes 11601 a 11700. */
 extern void __cdecl sub_001F87B0(void);
 extern void __cdecl sub_001F8A00(void);
 extern void __cdecl sub_001F8A70(void);
@@ -12006,7 +12220,7 @@ extern void __cdecl sub_001FCA70(void);
 extern void __cdecl sub_001FCA80(void);
 extern void __cdecl sub_001FCAD0(void);
 extern void __cdecl sub_001FCB00(void);
-/* Lote 118/137 — funções 11701 a 11800. */
+/* Lote 118/137 â€” funÃ§Ãµes 11701 a 11800. */
 extern void __cdecl sub_001FCB30(void);
 extern void __cdecl sub_001FCBE0(void);
 extern void __cdecl sub_001FCC60(void);
@@ -12107,7 +12321,7 @@ extern void __cdecl sub_00206180(void);
 extern void __cdecl sub_00206240(void);
 extern void __cdecl sub_00206660(void);
 extern void __cdecl sub_00206730(void);
-/* Lote 119/137 — funções 11801 a 11900. */
+/* Lote 119/137 â€” funÃ§Ãµes 11801 a 11900. */
 extern void __cdecl sub_00206750(void);
 extern void __cdecl sub_002069F0(void);
 extern void __cdecl sub_00206C90(void);
@@ -12208,7 +12422,7 @@ extern void __cdecl sub_0020FA40(void);
 extern void __cdecl sub_0020FA60(void);
 extern void __cdecl sub_0020FAA0(void);
 extern void __cdecl sub_0020FAE0(void);
-/* Lote 120/137 — funções 11901 a 12000. */
+/* Lote 120/137 â€” funÃ§Ãµes 11901 a 12000. */
 extern void __cdecl sub_0020FAF0(void);
 extern void __cdecl sub_0020FB00(void);
 extern void __cdecl sub_0020FB10(void);
@@ -12309,7 +12523,7 @@ extern void __cdecl sub_00212310(void);
 extern void __cdecl sub_00212330(void);
 extern void __cdecl sub_00212350(void);
 extern void __cdecl sub_00212370(void);
-/* Lote 121/137 — funções 12001 a 12100. */
+/* Lote 121/137 â€” funÃ§Ãµes 12001 a 12100. */
 extern void __cdecl sub_00212390(void);
 extern void __cdecl sub_002125D0(void);
 extern void __cdecl sub_002125F0(void);
@@ -12410,7 +12624,7 @@ extern void __cdecl sub_002144F0(void);
 extern void __cdecl sub_00214730(void);
 extern void __cdecl sub_00214750(void);
 extern void __cdecl sub_00214770(void);
-/* Lote 122/137 — funções 12101 a 12200. */
+/* Lote 122/137 â€” funÃ§Ãµes 12101 a 12200. */
 extern void __cdecl sub_00214790(void);
 extern void __cdecl sub_002147B0(void);
 extern void __cdecl sub_002147E0(void);
@@ -12511,7 +12725,7 @@ extern void __cdecl sub_00216150(void);
 extern void __cdecl sub_00216180(void);
 extern void __cdecl sub_002161A0(void);
 extern void __cdecl sub_002161C0(void);
-/* Lote 123/137 — funções 12201 a 12300. */
+/* Lote 123/137 â€” funÃ§Ãµes 12201 a 12300. */
 extern void __cdecl sub_002161E0(void);
 extern void __cdecl sub_00216200(void);
 extern void __cdecl sub_00216220(void);
@@ -12612,7 +12826,7 @@ extern void __cdecl sub_00216DD0(void);
 extern void __cdecl sub_00216DF0(void);
 extern void __cdecl sub_00216E10(void);
 extern void __cdecl sub_00216E30(void);
-/* Lote 124/137 — funções 12301 a 12400. */
+/* Lote 124/137 â€” funÃ§Ãµes 12301 a 12400. */
 extern void __cdecl sub_00216E50(void);
 extern void __cdecl sub_00216E70(void);
 extern void __cdecl sub_00216E90(void);
@@ -12713,7 +12927,7 @@ extern void __cdecl sub_002178B0(void);
 extern void __cdecl sub_002178C0(void);
 extern void __cdecl sub_002178D0(void);
 extern void __cdecl sub_002178E0(void);
-/* Lote 125/137 — funções 12401 a 12500. */
+/* Lote 125/137 â€” funÃ§Ãµes 12401 a 12500. */
 extern void __cdecl sub_002178F0(void);
 extern void __cdecl sub_00217900(void);
 extern void __cdecl sub_00217910(void);
@@ -12814,7 +13028,7 @@ extern void __cdecl sub_00217EF0(void);
 extern void __cdecl sub_00217F00(void);
 extern void __cdecl sub_00217F10(void);
 extern void __cdecl sub_00217F20(void);
-/* Lote 126/137 — funções 12501 a 12600. */
+/* Lote 126/137 â€” funÃ§Ãµes 12501 a 12600. */
 extern void __cdecl sub_00217F30(void);
 extern void __cdecl sub_00217F40(void);
 extern void __cdecl sub_00217F50(void);
@@ -12915,7 +13129,7 @@ extern void __cdecl sub_002196EB(void);
 extern void __cdecl sub_00219703(void);
 extern void __cdecl sub_0021971F(void);
 extern void __cdecl sub_0021973B(void);
-/* Lote 127/137 — funções 12601 a 12700. */
+/* Lote 127/137 â€” funÃ§Ãµes 12601 a 12700. */
 extern void __cdecl sub_00219757(void);
 extern void __cdecl sub_00219773(void);
 extern void __cdecl sub_00219797(void);
@@ -13016,7 +13230,7 @@ extern void __cdecl sub_0021B65A(void);
 extern void __cdecl sub_0021B6C2(void);
 extern void __cdecl sub_0021B6F6(void);
 extern void __cdecl sub_0021B71F(void);
-/* Lote 128/137 — funções 12701 a 12800. */
+/* Lote 128/137 â€” funÃ§Ãµes 12701 a 12800. */
 extern void __cdecl sub_0021B746(void);
 extern void __cdecl sub_0021B78F(void);
 extern void __cdecl sub_0021B7D2(void);
@@ -13117,7 +13331,7 @@ extern void __cdecl sub_0021DD5C(void);
 extern void __cdecl sub_0021DE2A(void);
 extern void __cdecl sub_0021DEB8(void);
 extern void __cdecl sub_0021DF03(void);
-/* Lote 129/137 — funções 12801 a 12900. */
+/* Lote 129/137 â€” funÃ§Ãµes 12801 a 12900. */
 extern void __cdecl sub_0021DF1E(void);
 extern void __cdecl sub_0021DF95(void);
 extern void __cdecl sub_0021DFB3(void);
@@ -13218,7 +13432,7 @@ extern void __cdecl sub_00220CA1(void);
 extern void __cdecl sub_00220D3B(void);
 extern void __cdecl sub_00220DB8(void);
 extern void __cdecl sub_00220E05(void);
-/* Lote 130/137 — funções 12901 a 13000. */
+/* Lote 130/137 â€” funÃ§Ãµes 12901 a 13000. */
 extern void __cdecl sub_00220EC2(void);
 extern void __cdecl sub_00220F4E(void);
 extern void __cdecl sub_00220FAF(void);
@@ -13319,7 +13533,7 @@ extern void __cdecl sub_0022579B(void);
 extern void __cdecl sub_002257D8(void);
 extern void __cdecl sub_002257DD(void);
 extern void __cdecl sub_00225812(void);
-/* Lote 131/137 — funções 13001 a 13100. */
+/* Lote 131/137 â€” funÃ§Ãµes 13001 a 13100. */
 extern void __cdecl sub_0022585C(void);
 extern void __cdecl sub_00225896(void);
 extern void __cdecl sub_002258AC(void);
@@ -13420,7 +13634,7 @@ extern void __cdecl sub_0022B380(void);
 extern void __cdecl sub_0022B50C(void);
 extern void __cdecl sub_0022B56B(void);
 extern void __cdecl sub_0022B5EC(void);
-/* Lote 132/137 — funções 13101 a 13200. */
+/* Lote 132/137 â€” funÃ§Ãµes 13101 a 13200. */
 extern void __cdecl sub_0022B670(void);
 extern void __cdecl sub_0022B6DF(void);
 extern void __cdecl sub_0022B751(void);
@@ -13521,7 +13735,7 @@ extern void __cdecl sub_0024509E(void);
 extern void __cdecl sub_002452AC(void);
 extern void __cdecl sub_00245358(void);
 extern void __cdecl sub_002456AD(void);
-/* Lote 133/137 — funções 13201 a 13300. */
+/* Lote 133/137 â€” funÃ§Ãµes 13201 a 13300. */
 extern void __cdecl sub_002456EA(void);
 extern void __cdecl sub_002457FF(void);
 extern void __cdecl sub_0024583D(void);
@@ -13622,7 +13836,7 @@ extern void __cdecl sub_0026C2C0(void);
 extern void __cdecl sub_0026C310(void);
 extern void __cdecl sub_0026C360(void);
 extern void __cdecl sub_0026C410(void);
-/* Lote 134/137 — funções 13301 a 13400. */
+/* Lote 134/137 â€” funÃ§Ãµes 13301 a 13400. */
 extern void __cdecl sub_0026C470(void);
 extern void __cdecl sub_0026C4B0(void);
 extern void __cdecl sub_0026C500(void);
@@ -13723,7 +13937,7 @@ extern void __cdecl sub_002702C0(void);
 extern void __cdecl sub_002703E0(void);
 extern void __cdecl sub_00270790(void);
 extern void __cdecl sub_002709A0(void);
-/* Lote 135/137 — funções 13401 a 13500. */
+/* Lote 135/137 â€” funÃ§Ãµes 13401 a 13500. */
 extern void __cdecl sub_00270A40(void);
 extern void __cdecl sub_00270BF0(void);
 extern void __cdecl sub_00270D40(void);
@@ -13824,7 +14038,7 @@ extern void __cdecl sub_0027DB79(void);
 extern void __cdecl sub_0027DC29(void);
 extern void __cdecl sub_0027DC34(void);
 extern void __cdecl sub_0027DD02(void);
-/* Lote 136/137 — funções 13501 a 13600. */
+/* Lote 136/137 â€” funÃ§Ãµes 13501 a 13600. */
 extern void __cdecl sub_0027DD24(void);
 extern void __cdecl sub_0027DD29(void);
 extern void __cdecl sub_0027DD96(void);
@@ -13925,7 +14139,7 @@ extern void __cdecl sub_00280068(void);
 extern void __cdecl sub_002800B7(void);
 extern void __cdecl sub_00280243(void);
 extern void __cdecl sub_00280277(void);
-/* Lote 137/137 — funções 13601 a 13676. */
+/* Lote 137/137 â€” funÃ§Ãµes 13601 a 13676. */
 extern void __cdecl sub_00280352(void);
 extern void __cdecl sub_00280499(void);
 extern void __cdecl sub_00280599(void);
@@ -27893,19 +28107,138 @@ static const char *find_import_name(uint32_t return_rva)
     return "unknown Xbox import";
 }
 
-static void __cdecl record_xbox_import(const uint32_t *frame)
+static uint32_t read_u32(const uint8_t *bytes, size_t offset)
+{
+    uint32_t value;
+    memcpy(&value, bytes + offset, sizeof(value));
+    return value;
+}
+
+static int load_xbe_header(void)
+{
+    const char *override_path = getenv("BLACK_GAME_XBE");
+    const char *paths[] = { "game/default.xbe", "black/default.xbe", "../black/default.xbe" };
+    const char *selected_path = NULL;
+    uint8_t header[0xA40];
+    FILE *file = NULL;
+    long file_size;
+    size_t bytes_read, i, loaded = 0;
+    uint32_t section_va[2], section_size[2];
+
+    if (override_path && override_path[0]) {
+        file = fopen(override_path, "rb");
+        if (file) selected_path = override_path;
+    } else {
+        for (i = 0; i < sizeof(paths) / sizeof(paths[0]); ++i) {
+            file = fopen(paths[i], "rb");
+            if (file) { selected_path = paths[i]; break; }
+        }
+    }
+    if (!file) {
+        trace_log("event=xbe_header_failure reason=not_found override=%s\n", override_path ? override_path : "none");
+        return 0;
+    }
+    if (fseek(file, 0, SEEK_END) || (file_size = ftell(file)) < (long)sizeof(header) || fseek(file, 0, SEEK_SET)) {
+        trace_log("event=xbe_header_failure reason=invalid_file_size path=%s\n", selected_path);
+        fclose(file); return 0;
+    }
+    bytes_read = fread(header, 1, sizeof(header), file);
+    if (bytes_read != sizeof(header) || memcmp(header, "XBEH", 4)) {
+        trace_log("event=xbe_header_failure reason=invalid_header path=%s bytes=%lu\n", selected_path, (unsigned long)bytes_read);
+        fclose(file); return 0;
+    }
+
+    uint32_t image_base = read_u32(header, 0x104), header_size = read_u32(header, 0x108);
+    uint32_t image_size = read_u32(header, 0x10C), cert_va = read_u32(header, 0x118);
+    uint32_t section_count = read_u32(header, 0x11C), section_headers_va = read_u32(header, 0x120);
+    if (image_base != BLACK_GUEST_IMAGE_BASE || header_size != sizeof(header) || image_size != BLACK_GUEST_IMAGE_SIZE ||
+        cert_va < image_base || cert_va - image_base > header_size - 4 || section_count != 13 ||
+        section_headers_va < image_base || section_headers_va - image_base > header_size ||
+        section_count > (header_size - (section_headers_va - image_base)) / 0x38u) {
+        trace_log("event=xbe_header_failure reason=unsupported_layout\n"); fclose(file); return 0;
+    }
+    uint32_t cert_size = read_u32(header, cert_va - image_base);
+    if (cert_size < 4 || cert_size > header_size - (cert_va - image_base)) {
+        trace_log("event=xbe_header_failure reason=invalid_certificate_size\n"); fclose(file); return 0;
+    }
+
+    memcpy(guest_image, header, header_size);
+    uint32_t host_pointer = (uint32_t)(uintptr_t)(guest_image + cert_va - image_base);
+    memcpy(guest_image + 0x118, &host_pointer, 4);
+    host_pointer = (uint32_t)(uintptr_t)(guest_image + section_headers_va - image_base);
+    memcpy(guest_image + 0x120, &host_pointer, 4);
+    uint32_t table_offset = section_headers_va - image_base;
+    for (i = 0; i < section_count; ++i) {
+        const uint8_t *section = header + table_offset + i * 0x38u;
+        uint32_t va = read_u32(section, 4), virtual_size = read_u32(section, 8);
+        uint32_t raw_address = read_u32(section, 12), raw_size = read_u32(section, 16);
+        uint32_t name_va = read_u32(section, 20);
+        if (name_va < image_base || name_va - image_base >= header_size ||
+            !memchr(header + name_va - image_base, 0, header_size - (name_va - image_base))) {
+            trace_log("event=xbe_section_failure index=%lu reason=invalid_name\n", (unsigned long)i); fclose(file); return 0;
+        }
+        const char *name = (const char *)(header + name_va - image_base);
+        host_pointer = (uint32_t)(uintptr_t)(guest_image + name_va - image_base);
+        memcpy(guest_image + table_offset + i * 0x38u + 20, &host_pointer, 4);
+        if (strcmp(name, ".rdata") && strcmp(name, ".data")) continue;
+        if (loaded == 2 || va < image_base || va - image_base > image_size || virtual_size > image_size - (va - image_base) ||
+            raw_size > virtual_size || raw_address > (uint32_t)file_size || raw_size > (uint32_t)file_size - raw_address) {
+            trace_log("event=xbe_section_failure index=%lu name=%s reason=invalid_range\n", (unsigned long)i, name); fclose(file); return 0;
+        }
+        uint8_t *destination = guest_image + va - image_base;
+        memset(destination, 0, virtual_size);
+        if (fseek(file, raw_address, SEEK_SET) || fread(destination, 1, raw_size, file) != raw_size) {
+            trace_log("event=xbe_section_failure index=%lu name=%s reason=read_failed\n", (unsigned long)i, name); fclose(file); return 0;
+        }
+        section_va[loaded] = va; section_size[loaded++] = virtual_size;
+        trace_log("event=xbe_data_section_loaded name=%s guest_va=0x%08X virtual_size=0x%08X raw_size=0x%08X executable_code_loaded=0\n", name, va, virtual_size, raw_size);
+    }
+    if (loaded != 2) { trace_log("event=xbe_section_failure reason=data_sections_missing\n"); fclose(file); return 0; }
+    for (i = 0; i < sizeof(black_xbox_data_pointer_patches) / sizeof(black_xbox_data_pointer_patches[0]); ++i) {
+        const BlackGuestPointerPatch *patch = &black_xbox_data_pointer_patches[i];
+        int valid_slot = 0;
+        size_t j;
+        if (patch->slot_guest_va < image_base || patch->slot_guest_va - image_base > image_size - 4) { fclose(file); return 0; }
+        for (j = 0; j < loaded; ++j)
+            if (patch->slot_guest_va >= section_va[j] && patch->slot_guest_va - section_va[j] <= section_size[j] - 4) valid_slot = 1;
+        if (!valid_slot) { trace_log("event=xbe_pointer_failure reason=slot_not_loaded slot=0x%08X\n", patch->slot_guest_va); fclose(file); return 0; }
+        if (patch->target_is_function) {
+            BlackGuestFunction target = black_resolve_guest_function(patch->target_guest_va);
+            if (!target) { trace_log("event=xbe_pointer_failure reason=function_unmapped target=0x%08X\n", patch->target_guest_va); fclose(file); return 0; }
+            host_pointer = (uint32_t)(uintptr_t)target;
+        } else {
+            if (patch->target_guest_va < image_base || patch->target_guest_va >= image_base + image_size) { fclose(file); return 0; }
+            host_pointer = (uint32_t)(uintptr_t)(guest_image + patch->target_guest_va - image_base);
+        }
+        memcpy(guest_image + patch->slot_guest_va - image_base, &host_pointer, 4);
+        trace_log("event=xbe_data_pointer_rebased slot=0x%08X target=0x%08X target_is_function=%u host=0x%08X\n", patch->slot_guest_va, patch->target_guest_va, patch->target_is_function, host_pointer);
+    }
+    fclose(file);
+    trace_log("event=xbe_header_loaded path=%s bytes=%lu base=0x%08X image_size=0x%08X certificate_guest_va=0x%08X certificate_host=0x%08X certificate_size=0x%08X section_headers_host=0x%08X data_sections=%lu executable_sections_loaded=0\n",
+        selected_path, (unsigned long)header_size, image_base, image_size, cert_va, (uint32_t)(uintptr_t)(guest_image + cert_va - image_base), cert_size,
+        (uint32_t)(uintptr_t)(guest_image + section_headers_va - image_base), (unsigned long)loaded);
+    return 1;
+}
+
+static int __cdecl record_xbox_import(uint32_t *frame)
 {
     HMODULE module = GetModuleHandleW(NULL);
     uint32_t return_rva = frame[9] - (uint32_t)(uintptr_t)module;
-    uint32_t args[6] = { 0, 0, 0, 0, 0, 0 };
+    uint32_t args[10] = { 0 };
     SIZE_T read = 0;
     last_import_return_rva = return_rva;
     last_import_name = find_import_name(return_rva);
-    ReadProcessMemory(GetCurrentProcess(), (const void *)(uintptr_t)(frame[9] + 4), args, sizeof(args), &read);
-    trace_log("event=xbox_import api=%s call_rva=0x%08X eax=%08X ecx=%08X edx=%08X ebx=%08X esi=%08X edi=%08X ebp=%08X esp=%08X args=%08X,%08X,%08X,%08X,%08X,%08X\n",
+    ReadProcessMemory(GetCurrentProcess(), &frame[10], args, sizeof(args), &read);
+    trace_log("event=xbox_import api=%s call_rva=0x%08X eax=%08X ecx=%08X edx=%08X ebx=%08X esi=%08X edi=%08X ebp=%08X esp=%08X stack_args=%08X,%08X,%08X,%08X,%08X,%08X,%08X,%08X,%08X,%08X\n",
         last_import_name, return_rva, frame[7], frame[6], frame[5], frame[4], frame[1], frame[0], frame[2],
         (uint32_t)(uintptr_t)&frame[9],
-        args[0], args[1], args[2], args[3], args[4], args[5]);
+        args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+    if (strcmp(last_import_name, "PsCreateSystemThreadEx") == 0) {
+        frame[7] = 0xC0000002u;
+        trace_log("event=xbox_import_stub api=%s result=0xC0000002 stack_cleanup=40 reason=thread_adapter_pending\n", last_import_name);
+        return 1;
+    }
+    return 0;
 }
 
 __declspec(naked) static void __cdecl trace_xbox_import(void)
@@ -27917,6 +28250,12 @@ __declspec(naked) static void __cdecl trace_xbox_import(void)
         push eax
         call record_xbox_import
         add esp, 4
+        test eax, eax
+        jz trace_only
+        popad
+        popfd
+        ret 40
+    trace_only:
         popad
         popfd
         int 3
@@ -27939,6 +28278,28 @@ static int patch_guest_operands(HMODULE module)
         memcpy(operand, &host_data, sizeof(host_data));
         FlushInstructionCache(GetCurrentProcess(), operand, sizeof(host_data));
         VirtualProtect(instruction, 15, old_protection, &old_protection);
+    }
+    for (i = 0; i < sizeof(black_guest_immediate_patches) / sizeof(black_guest_immediate_patches[0]); ++i) {
+        const BlackGuestImmediatePatch *patch = &black_guest_immediate_patches[i];
+        uint8_t *operand = (uint8_t *)module + patch->operand_rva;
+        uint32_t host_data = (uint32_t)(uintptr_t)(guest_image + patch->target_guest_va - BLACK_GUEST_IMAGE_BASE);
+        DWORD old_protection;
+        if (!VirtualProtect(operand, 4, PAGE_EXECUTE_READWRITE, &old_protection)) return 0;
+        memcpy(operand, &host_data, 4);
+        FlushInstructionCache(GetCurrentProcess(), operand, 4);
+        VirtualProtect(operand, 4, old_protection, &old_protection);
+    }
+    for (i = 0; i < sizeof(black_guest_branch_patches) / sizeof(black_guest_branch_patches[0]); ++i) {
+        const BlackGuestBranchPatch *patch = &black_guest_branch_patches[i];
+        BlackGuestFunction target = black_resolve_guest_function(patch->target_guest_va);
+        uint8_t *instruction = (uint8_t *)module + patch->instruction_rva;
+        int32_t displacement;
+        DWORD old_protection;
+        if (!target || !VirtualProtect(instruction, 5, PAGE_EXECUTE_READWRITE, &old_protection)) return 0;
+        displacement = (int32_t)((uint32_t)(uintptr_t)target - ((uint32_t)(uintptr_t)instruction + 5));
+        memcpy(instruction + 1, &displacement, sizeof(displacement));
+        FlushInstructionCache(GetCurrentProcess(), instruction + 1, sizeof(displacement));
+        VirtualProtect(instruction, 5, old_protection, &old_protection);
     }
     return 1;
 }
@@ -27966,15 +28327,15 @@ int main(void)
         trace_log("event=setup_failure operation=VirtualAlloc win32_error=%lu\n", GetLastError());
         return 10;
     }
-    if (!patch_guest_operands(module) || !install_import_traps()) {
-        trace_log("event=setup_failure operation=guest_rebase_or_import_slots win32_error=%lu\n", GetLastError());
+    if (!load_xbe_header() || !patch_guest_operands(module) || !install_import_traps()) {
+        trace_log("event=setup_failure operation=load_header_rebase_or_import_slots win32_error=%lu\n", GetLastError());
         VirtualFree(guest_image, 0, MEM_RELEASE);
         return 11;
     }
 
     BlackGuestFunction callback = black_resolve_guest_function(0x000259CB);
     BlackGuestFunction unknown = black_resolve_guest_function(0xDEADBEEF);
-    trace_log("event=startup module_base=0x%08X guest_image=0x%08X guest_size=0x%08X entry_guest_va=0x00025A3F guest_data=zero_filled\n",
+    trace_log("event=startup module_base=0x%08X guest_image=0x%08X guest_size=0x%08X entry_guest_va=0x00025A3F guest_data=header_rdata_data\n",
         (uint32_t)(uintptr_t)module, (uint32_t)(uintptr_t)guest_image, BLACK_GUEST_IMAGE_SIZE);
     trace_log("event=guest_function_map functions=%u callback_guest_va=0x000259CB callback_host=0x%08X unknown_resolves=%u map_self_check=%u\n",
         black_guest_function_count(), (uint32_t)(uintptr_t)callback, unknown != 0, black_guest_function_map_self_check());
