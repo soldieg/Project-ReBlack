@@ -107940,9 +107940,9 @@ static __declspec(naked) void __cdecl black_xbox_pgraph_ack_interrupt_ebp(void)
     }
 }
 
-/* shortcut: raw FIFO writes only; replace with the PGRAPH method consumer before treating packets as completed work. */
-typedef struct { uint32_t site_guest, function_guest, offset, register_offset; uint8_t base_reg, value_reg, length; uint32_t immediate; uint8_t expected[10]; uint8_t *host_site; } BlackPgraphFifoPatch;
-static BlackPgraphFifoPatch black_pgraph_fifo_patches[] = {
+/* shortcut: raw RDI writes only; replace with the PGRAPH method consumer before treating packets as completed work. */
+typedef struct { uint32_t site_guest, function_guest, offset, register_offset; uint8_t base_reg, value_reg, length; uint32_t immediate; uint8_t expected[10]; uint8_t *host_site; } BlackPgraphRdiPatch;
+static BlackPgraphRdiPatch black_pgraph_rdi_patches[] = {
     { 0x0027364Fu, 0x0027357Fu, 0xD0u, 0x00400750u, 1u, 5u, 6u, 0x00000000u, { 0x89u, 0x96u, 0x50u, 0x07u, 0x40u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u }, NULL },
     { 0x00273655u, 0x0027357Fu, 0xD6u, 0x00400754u, 1u, 7u, 6u, 0x00000000u, { 0x89u, 0x86u, 0x54u, 0x07u, 0x40u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u }, NULL },
     { 0x0027365Eu, 0x0027357Fu, 0xDFu, 0x00400750u, 1u, 7u, 6u, 0x00000000u, { 0x89u, 0x86u, 0x50u, 0x07u, 0x40u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u }, NULL },
@@ -107976,54 +107976,54 @@ static BlackPgraphFifoPatch black_pgraph_fifo_patches[] = {
     { 0x00275598u, 0x00275500u, 0x98u, 0x00400750u, 1u, 255u, 10u, 0x003D0000u, { 0xC7u, 0x86u, 0x50u, 0x07u, 0x40u, 0x00u, 0x00u, 0x00u, 0x3Du, 0x00u,  }, NULL },
     { 0x002755A4u, 0x00275500u, 0xA4u, 0x00400754u, 1u, 6u, 6u, 0x00000000u, { 0x89u, 0x8Eu, 0x54u, 0x07u, 0x40u, 0x00u, 0x00u, 0x00u, 0x00u, 0x00u }, NULL },
 };
-static volatile LONG black_pgraph_fifo_trace_count;
-static void __cdecl black_pgraph_fifo_dispatch(uint32_t *frame)
+static volatile LONG black_pgraph_rdi_trace_count;
+static void __cdecl black_pgraph_rdi_dispatch(uint32_t *frame)
 {
     uintptr_t ret = frame[9]; size_t i; uint32_t base, value; LONG n;
-    for (i = 0; i < sizeof(black_pgraph_fifo_patches)/sizeof(black_pgraph_fifo_patches[0]); ++i) {
-        BlackPgraphFifoPatch *p = &black_pgraph_fifo_patches[i];
+    for (i = 0; i < sizeof(black_pgraph_rdi_patches)/sizeof(black_pgraph_rdi_patches[0]); ++i) {
+        BlackPgraphRdiPatch *p = &black_pgraph_rdi_patches[i];
         if ((uintptr_t)p->host_site + 5u != ret) continue;
         base = frame[p->base_reg]; value = p->value_reg == 255u ? p->immediate : frame[p->value_reg];
         *(volatile uint32_t *)(uintptr_t)(base + p->register_offset) = value;
-        n = InterlockedIncrement(&black_pgraph_fifo_trace_count);
-        if (n <= 256) trace_log("event=xbox_pgraph_fifo_write index=%ld guest=0x%08X register=0x%08X value=0x%08X\n", n, p->site_guest, p->register_offset, value);
-        else if (n == 257) trace_log("event=xbox_pgraph_fifo_write_trace_truncated limit=256\n");
+        n = InterlockedIncrement(&black_pgraph_rdi_trace_count);
+        if (n <= 256) trace_log("event=xbox_pgraph_rdi_write index=%ld guest=0x%08X register=0x%08X value=0x%08X\n", n, p->site_guest, p->register_offset, value);
+        else if (n == 257) trace_log("event=xbox_pgraph_rdi_write_trace_truncated limit=256\n");
         return;
     }
-    trace_log("event=xbox_pgraph_fifo_dispatch_failed return=0x%08X\n", (uint32_t)ret);
+    trace_log("event=xbox_pgraph_rdi_dispatch_failed return=0x%08X\n", (uint32_t)ret);
 }
-static __declspec(naked) void __cdecl black_pgraph_fifo_thunk(void)
+static __declspec(naked) void __cdecl black_pgraph_rdi_thunk(void)
 {
     __asm {
         pushfd
         pushad
         mov eax, esp
         push eax
-        call black_pgraph_fifo_dispatch
+        call black_pgraph_rdi_dispatch
         add esp, 4
         popad
         popfd
         ret
     }
 }
-static int patch_xbox_pgraph_fifo_writes(void)
+static int patch_xbox_pgraph_rdi_writes(void)
 {
     size_t i;
-    for (i=0; i<sizeof(black_pgraph_fifo_patches)/sizeof(black_pgraph_fifo_patches[0]); ++i) {
-        BlackPgraphFifoPatch *p=&black_pgraph_fifo_patches[i];
+    for (i=0; i<sizeof(black_pgraph_rdi_patches)/sizeof(black_pgraph_rdi_patches[0]); ++i) {
+        BlackPgraphRdiPatch *p=&black_pgraph_rdi_patches[i];
         BlackGuestFunction fn=black_resolve_guest_runtime_target(p->function_guest);
         uint8_t *site; uint8_t replacement[10]={0xE8u,0,0,0,0,0x90u,0x90u,0x90u,0x90u,0x90u};
         int32_t rel; DWORD old;
         if (!fn) return 0;
         site=(uint8_t *)(uintptr_t)fn+p->offset;
-        if (memcmp(site,p->expected,p->length)!=0) { trace_log("event=xbox_pgraph_fifo_patch_failed guest=0x%08X reason=unexpected_bytes\n",p->site_guest); return 0; }
-        rel=(int32_t)((uint32_t)(uintptr_t)black_pgraph_fifo_thunk-((uint32_t)(uintptr_t)site+5u));
+        if (memcmp(site,p->expected,p->length)!=0) { trace_log("event=xbox_pgraph_rdi_patch_failed guest=0x%08X reason=unexpected_bytes\n",p->site_guest); return 0; }
+        rel=(int32_t)((uint32_t)(uintptr_t)black_pgraph_rdi_thunk-((uint32_t)(uintptr_t)site+5u));
         memcpy(replacement+1,&rel,4);
         if (!VirtualProtect(site,p->length,PAGE_EXECUTE_READWRITE,&old)) return 0;
         memcpy(site,replacement,p->length); FlushInstructionCache(GetCurrentProcess(),site,p->length); VirtualProtect(site,p->length,old,&old);
         p->host_site=site;
     }
-    trace_log("event=xbox_pgraph_fifo_patches_installed count=%u\n",(unsigned)(sizeof(black_pgraph_fifo_patches)/sizeof(black_pgraph_fifo_patches[0])));
+    trace_log("event=xbox_pgraph_rdi_patches_installed count=%u\n",(unsigned)(sizeof(black_pgraph_rdi_patches)/sizeof(black_pgraph_rdi_patches[0])));
     return 1;
 }
 
@@ -108639,7 +108639,7 @@ int main(void)
         memcpy(black_xbox_main_context.thread_metadata + 0x12Cu, &thread_id, sizeof(thread_id));
     }
     if (!patch_guest_operands(module)) { trace_log("event=setup_failure operation=patch_guest_operands\n"); goto setup_failure; }
-    if (!patch_xbox_pgraph_fifo_writes()) { trace_log("event=setup_failure operation=patch_xbox_pgraph_fifo_writes\n"); goto setup_failure; }
+    if (!patch_xbox_pgraph_rdi_writes()) { trace_log("event=setup_failure operation=patch_xbox_pgraph_rdi_writes\n"); goto setup_failure; }
     if (!patch_xbox_mmio_port_write()) { trace_log("event=setup_failure operation=patch_xbox_mmio_port_write\n"); goto setup_failure; }
     if (!patch_xbox_pgraph_interrupt_ack()) { trace_log("event=setup_failure operation=patch_xbox_pgraph_interrupt_ack\n"); goto setup_failure; }
     if (!patch_xbox_cache_flush()) { trace_log("event=setup_failure operation=patch_xbox_cache_flush\n"); goto setup_failure; }
